@@ -30,11 +30,44 @@
         that you have already seen.</p>
         
         <div id="feed"></div>
-        
+
+
+        <!--
+            For loading the feed API
+        -->
         <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+
+        <!-- 
+            For getting and setting cookies, etc.
+        -->
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script type="text/javascript" src="js/jquery.cookie.js"></script>
+
+
+        <!--
+            Cleaner source for creating a list of feeds
+            Handlebars template causes Cloud9 IDE to complain, however.
+        -->
+        
+        <script type="text/javascript" src="js/handlebars.js"></script>        
+        <script id="feed-template" type="text/x-handlebars-template">
+        
+            <div class="feed">
+              <a href="{{link}}" target="_blank"><h2>{{feed}}</h2></a>
+              {{#each entries}}
+              <dl>
+                <dt><a href="{{link}}" target="_blank">{{title}}</a></dt>
+                <dd>{{{snippet}}}</dd>
+              </dl>
+              {{/each}}
+            </div>
+
+        </script>
+
         <script type="text/javascript">
+var source   = $("#feed-template").html();
+var template = Handlebars.compile(source);
 
 // For now, the choice of feeds is static.
 var myFeeds = [
@@ -73,48 +106,36 @@ function initialize() {
         lastVisit = new Date(cookie);
     }
     
-
     for(var i = 0; i < myFeeds.length; i++) {
         var feed = new google.feeds.Feed(myFeeds[i]);
         feed.load(function(result) {
             if (!result.error) {
-                var container = document.getElementById("feed");
-                
-                var feedLink = document.createElement("a");
-                feedLink.setAttribute("href", result.feed.link);
-                feedLink.setAttribute("target", "_blank");
-                var feedTitle = document.createElement("h2");
-                feedTitle.appendChild(document.createTextNode(result.feed.title));
-                feedLink.appendChild(feedTitle);
-                container.appendChild(feedLink);
-                
-                var list = document.createElement("dl");
-                for (var j = 0; j < result.feed.entries.length;j ++) {
+                var theEntries = new Array();
+                for (var j = 0; j < result.feed.entries.length;j++) {
                     var entry = result.feed.entries[j];
                     if (lastVisit !== undefined
                         && lastVisit > new Date(entry.publishedDate)) {
                         continue;    
                     }
                     
-                    var term = document.createElement("dt");
-                    var header = document.createElement("a");
-                    header.setAttribute("href", entry.link);
-                    header.setAttribute("target", "_blank");
-                    header.appendChild(document.createTextNode(entry.title));
-                    term.appendChild(header);
-                    list.appendChild(term);
-                    
-                    var desc = document.createElement("dd");
-                    desc.innerHTML = entry.contentSnippet;
-                    list.appendChild(desc);
-                    
-                    container.appendChild(list);
+                    theEntries.push({
+                        link: entry.link,
+                        title: entry.title,
+                        snippet: entry.contentSnippet
+                    });
                 }
+                                
+                $("#feed").append(template({
+                    link: result.feed.link,
+                    feed: result.feed.title,
+                    entries: theEntries
+                }));
             }
         });
     }
     
-    $.cookie(cookieName, (new Date()).toString(), { expires: 7, path: '/' });
+    // If the user-agent does not come back for a week, let the cookie expire.
+    $.cookie(cookieName, (new Date()).toString(), { expires: 7 });
 }
 google.setOnLoadCallback(initialize);
     </script>
