@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Some Feeds</title>
+        <style type="text/css">
+        /* Run the text down the center of a 640px page. */
+        body {
+            font-family: Verdana, Helvetica, Arial, sans-serif;
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 640px;
+        }
+        
+        a {
+         text-decoration: none;
+        }
+        
+        a:active, a:hover {
+         color: #f58220;
+        }
+        </style>
+    </head>
+    
+    <body>
+        <h1>Some Feeds</h1>
+        
+        <p>This page uses the <a href="https://developers.google.com/feed/v1/"
+        >Google Feed API</a>. It sets a cookie to avoid displaying items
+        that you have already seen.</p>
+        
+        <div id="feed"></div>
+        
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type="text/javascript" src="js/jquery.cookie.js"></script>
+        <script type="text/javascript">
+
+// For now, the choice of feeds is static.
+var myFeeds = [
+    "http://andrewgavinmarshall.com/feed/",
+    "http://great-hikes.com/blog/feed/",
+    "http://blog.arnaudlacour.com/feeds/posts/default",
+    "http://www.schneier.com/blog/atom.xml",
+    "http://feeds2.feedburner.com/clusterfucknation",
+    "http://www.jwz.org/blog/feed/",
+    "http://ludopoitou.wordpress.com/feed/",
+    "http://marginnotes2.wordpress.com/feed/",
+    "http://www.tri4joe.com/feed/",
+    "http://www.dirmgr.com/blog/rss.xml",
+    "http://chomskydotinfo.blogspot.com/rss.xml",
+    "http://earthly-powers.blogspot.com/rss.xml",
+    "http://webmink.com/feed/",
+    "https://www.tbray.org/ongoing/ongoing.atom"
+];
+
+// Reader Last Visit
+var cookieName = 'RLV';
+
+google.load("feeds", "1");
+
+/**
+ * Each of myFeeds gets displayed with its title, followed by
+ * up to 4 recent entries in a definition list.
+ * 
+ * When the reader comes back again, only more recent feeds are
+ * displayed.
+ */
+function initialize() {
+    var cookie = $.cookie(cookieName);
+    var lastVisit;
+    if (cookie !== undefined) {
+        lastVisit = new Date(cookie);
+    }
+    
+
+    for(var i = 0; i < myFeeds.length; i++) {
+        var feed = new google.feeds.Feed(myFeeds[i]);
+        feed.load(function(result) {
+            if (!result.error) {
+                var container = document.getElementById("feed");
+                
+                var feedLink = document.createElement("a");
+                feedLink.setAttribute("href", result.feed.link);
+                feedLink.setAttribute("target", "_blank");
+                var feedTitle = document.createElement("h2");
+                feedTitle.appendChild(document.createTextNode(result.feed.title));
+                feedLink.appendChild(feedTitle);
+                container.appendChild(feedLink);
+                
+                var list = document.createElement("dl");
+                for (var j = 0; j < result.feed.entries.length;j ++) {
+                    var entry = result.feed.entries[j];
+                    if (lastVisit !== undefined
+                        && lastVisit > new Date(entry.publishedDate)) {
+                        continue;    
+                    }
+                    
+                    var term = document.createElement("dt");
+                    var header = document.createElement("a");
+                    header.setAttribute("href", entry.link);
+                    header.setAttribute("target", "_blank");
+                    header.appendChild(document.createTextNode(entry.title));
+                    term.appendChild(header);
+                    list.appendChild(term);
+                    
+                    var desc = document.createElement("dd");
+                    desc.innerHTML = entry.contentSnippet;
+                    list.appendChild(desc);
+                    
+                    container.appendChild(list);
+                }
+            }
+        });
+    }
+    
+    $.cookie(cookieName, (new Date()).toString(), { expires: 7, path: '/' });
+}
+google.setOnLoadCallback(initialize);
+    </script>
+    </body>
+</html>
