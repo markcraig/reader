@@ -107,54 +107,58 @@ var myFeeds = [
 
 // Reader Last Visit
 var cookieName = 'RLV';
+var lastVisit;
 
 google.load("feeds", "1");
 
 /**
- * Each of myFeeds gets displayed with its title, followed by
- * up to 4 recent entries in a definition list.
+ * Template feeds and display them in the page.
+ */
+function process(result) {
+    if (!result.error) {
+        var theEntries = [];
+        for (var j = 0; j < result.feed.entries.length;j++) {
+            var entry = result.feed.entries[j];
+            if (lastVisit !== undefined
+                && lastVisit > new Date(entry.publishedDate)) {
+                continue;    
+            }
+
+            theEntries.push({
+                link: entry.link,
+                title: entry.title,
+                snippet: entry.contentSnippet
+            });
+        }
+
+        $("#feed").append(template({
+            link: result.feed.link,
+            feed: result.feed.title,
+            entries: theEntries
+        }));
+    }
+}
+
+/**
+ * Get and process feeds.
  * 
- * When the reader comes back again, only more recent feeds are
- * displayed.
+ * If the user-agent reloads within a week, display only recent entries.
  */
 function initialize() {
     var cookie = $.cookie(cookieName);
-    var lastVisit;
     if (cookie !== undefined) {
         lastVisit = new Date(cookie);
     }
     
     for(var i = 0; i < myFeeds.length; i++) {
         var feed = new google.feeds.Feed(myFeeds[i]);
-        feed.load(function(result) {
-            if (!result.error) {
-                var theEntries = [];
-                for (var j = 0; j < result.feed.entries.length;j++) {
-                    var entry = result.feed.entries[j];
-                    if (lastVisit !== undefined
-                        && lastVisit > new Date(entry.publishedDate)) {
-                        continue;    
-                    }
-                    
-                    theEntries.push({
-                        link: entry.link,
-                        title: entry.title,
-                        snippet: entry.contentSnippet
-                    });
-                }
-                                
-                $("#feed").append(template({
-                    link: result.feed.link,
-                    feed: result.feed.title,
-                    entries: theEntries
-                }));
-            }
-        });
+        feed.load(process);
     }
     
-    // If the user-agent does not come back for a week, let the cookie expire.
+    // Let the last visit expire after a week.
     $.cookie(cookieName, (new Date()).toString(), { expires: 7 });
 }
+
 google.setOnLoadCallback(initialize);
     </script>
     </body>
