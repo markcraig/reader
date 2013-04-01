@@ -86,7 +86,7 @@
 var source   = $("#feed-template").html();
 var template = Handlebars.compile(source);
 
-// For now, the choice of feeds is static.
+// Choice of feeds (static for now).
 var myFeeds = [
     "http://andrewgavinmarshall.com/feed/",
     "http://great-hikes.com/blog/feed/",
@@ -105,9 +105,8 @@ var myFeeds = [
     "https://wikis.forgerock.org/confluence/createrssfeed.action?types=page&types=blogpost&types=mail&types=comment&types=attachment&sort=modified&showContent=true&showDiff=true&spaces=conf_all&labelString%3D&rssType=atom&maxResults=10&timeSpan=5&publicFeed=true&title=ForgeRock+Wiki+RSS+Feed"
 ];
 
-// Reader Last Visit
-var cookieName = 'RLV';
-var lastVisit;
+var cookieName = 'RLV';     // Reader Last Visit
+var lastVisit;              // Timestamp of last visit
 
 google.load("feeds", "1");
 
@@ -131,11 +130,13 @@ function process(result) {
             });
         }
 
-        $("#feed").append(template({
-            link: result.feed.link,
-            feed: result.feed.title,
-            entries: theEntries
-        }));
+        if (theEntries.length) {
+            $("#feed").append(template({
+                link: result.feed.link,
+                feed: result.feed.title,
+                entries: theEntries
+            }));
+        }
     }
 }
 
