@@ -48,12 +48,10 @@
         
         <div id="feed"></div>
 
-
         <!--
             For loading the feed API
         -->
         <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-
 
         <!-- 
             For getting and setting cookies, etc.
@@ -61,12 +59,10 @@
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script type="text/javascript" src="js/jquery.cookie.js"></script>
 
-
         <!--
             Cleaner source for creating a list of feeds
             Handlebars template causes Cloud9 IDE to complain, however.
         -->
-        
         <script type="text/javascript" src="js/handlebars.js"></script>        
         <script id="feed-template" type="text/x-handlebars-template">
         
@@ -105,13 +101,17 @@ var myFeeds = [
     "https://wikis.forgerock.org/confluence/createrssfeed.action?types=page&types=blogpost&types=mail&types=comment&types=attachment&sort=modified&showContent=true&showDiff=true&spaces=conf_all&labelString%3D&rssType=atom&maxResults=10&timeSpan=5&publicFeed=true&title=ForgeRock+Wiki+RSS+Feed"
 ];
 
-var cookieName = 'RLV';     // Reader Last Visit
-var lastVisit;              // Timestamp of last visit
+// Reader Last Visit
+var cookieName = 'RLV';
+
+// Timestamp of last visit
+var lastVisit;
 
 google.load("feeds", "1");
 
 /**
  * Template feeds and display them in the page.
+ * TODO: Move display to run when feeds are obtained.
  */
 function process(result) {
     if (!result.error) {
@@ -157,7 +157,7 @@ function initialize() {
     }
     
     // Let the last visit expire after a week.
-    //$.cookie(cookieName, (new Date()).toString(), { expires: 7 });
+    $.cookie(cookieName, (new Date()).toString(), { expires: 7 });
 }
 
 google.setOnLoadCallback(initialize);
