@@ -73,10 +73,10 @@
             <div class="feed">
               <a href="{{link}}" target="_blank"><h2>{{feed}}</h2></a>
               {{#each entries}}
-              <dl class="entry">
-                <dt><a href="{{link}}" target="_blank">{{title}}</a></dt>
-                <dd>{{{snippet}}}</dd>
-              </dl>
+              <div class="entry">
+                <div class="title"><a href="{{link}}" target="_blank">{{title}}</a></div>
+                <div class="content">{{{content}}}</div>
+              </div>
               {{/each}}
             </div>
 
@@ -127,7 +127,7 @@ function process(result) {
             theEntries.push({
                 link: entry.link,
                 title: entry.title,
-                snippet: entry.contentSnippet
+                content: entry.content
             });
         }
 
@@ -156,7 +156,7 @@ function initialize() {
     }
     
     // Let the last visit expire after a week.
-    $.cookie(cookieName, (new Date()).toString(), { expires: 7 });
+    //$.cookie(cookieName, (new Date()).toString(), { expires: 7 });
 }
 
 google.setOnLoadCallback(initialize);
