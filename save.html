@@ -26,7 +26,7 @@
     <div id="addFeed">
         <b>Add Feed</b>
         <form id="feedUrl">
-            <label for="addUrl">URL: </label><input id="addUrl"
+            <label for="addUrl">Site URL: </label><input id="addUrl"
                 type="url" size="60" />
             <div id="addError"></div>
         </form>
@@ -35,7 +35,7 @@
     <div id="importFeeds">
         <b>Import Feeds</b>
         <form>
-            <label for="feedsFile">Load feeds.json: </label><input
+            <label for="feedsFile">Overwrite feeds from JSON file: </label><input
                 id="feedsFile" type="file" accept="application/json" /> 
             <div id="content"></div>
         </form>
@@ -44,7 +44,7 @@
     <div id="exportFeeds">
         <b>Export Feeds</b>
         <form>Download your current <a id="export" href="not.set"
-            download="feeds.json">feeds</a> as feeds.json.</form>
+            download="feeds.json">feeds</a> as <code>feeds.json</code>.</form>
     </div>
 
     <!--
@@ -112,12 +112,12 @@ $("#feedsFile").change(function(event) {
     var file = event.target.files[0];
     console.log(JSON.stringify(file));
     var reader = new FileReader();
-    reader.onload = (function(file) { // broken
+    reader.onload = (function(file) {
         return function(e) {
-            var content = e.target.result;
-            localStorage.feeds = JSON.stringify(JSON.parse(content));
+            var content = JSON.parse(e.target.result);
+            localStorage.feeds = JSON.stringify(content);
             $("#content").html("<b>Saved to localStorage</b>"
-                +"<pre>"+content+"</pre>");
+                +"<pre>"+JSON.stringify(content)+"</pre>");
         };
     })(file);
     reader.readAsText(file);

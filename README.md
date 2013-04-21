@@ -10,9 +10,9 @@ only entries that have not already been read.
 
 ## TODO
 *   Sort feeds by title.
-*   If feed has nothing new, do not show it.
 *   If all feeds are empty, show "Nothing new to read."
 *   Replace hard-coded feed list with dynamic list (add/delete, load/save).
+*   Store feed lists by user somewhere. (OAuth 2.0 enough for this?)
 *   Beautify the layout.
 
 * * *
