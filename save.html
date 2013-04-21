@@ -1,0 +1,127 @@
+<!--
+! MPL 2.0 HEADER START
+!
+! This Source Code Form is subject to the terms of the Mozilla Public
+! License, v. 2.0. If a copy of the MPL was not distributed with this
+! file, You can obtain one at http://mozilla.org/MPL/2.0/.
+!
+! If applicable, add the following below this MPL 2.0 HEADER, replacing
+! the fields enclosed by brackets "[]" replaced with your own identifying
+! information:
+!     Portions Copyright [yyyy] [name of copyright owner]
+!
+! MPL 2.0 HEADER END
+!
+!     Copyright 2013 Mark Craig
+!
+-->
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Save</title>
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+    </head>
+    <body>
+    
+    <div id="addFeed">
+        <b>Add Feed</b>
+        <form id="feedUrl">
+            <label for="addUrl">URL: </label><input id="addUrl"
+                type="url" size="60" />
+            <div id="addError"></div>
+        </form>
+    </div>
+
+    <div id="importFeeds">
+        <b>Import Feeds</b>
+        <form>
+            <label for="feedsFile">Load feeds.json: </label><input
+                id="feedsFile" type="file" accept="application/json" /> 
+            <div id="content"></div>
+        </form>
+    </div>
+
+    <div id="exportFeeds">
+        <b>Export Feeds</b>
+        <form>Download your current <a id="export" href="not.set"
+            download="feeds.json">feeds</a> as feeds.json.</form>
+    </div>
+
+    <!--
+        For loading the feed API
+    -->
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript">
+/*
+[
+    {
+        "url": "feed-url",
+        "title": "string"
+    },...
+]
+*/
+var feeds = [];
+
+// Load feeds from local storage
+var test = localStorage.feeds;
+if (test !== undefined) {
+    feeds = test;
+}
+console.log("Feeds:\n" + JSON.stringify(feeds, undefined, 2));
+
+// Add feed to feeds (find from URL)
+google.load("feeds", "1");
+$("#feedUrl").submit(function(event) {
+    event.preventDefault();
+    var site = $("#addUrl").val().replace(/^http(s)?:\/\//, "");
+    console.log(site);
+    google.feeds.findFeeds("site:"+site, findDone);
+});
+
+function findDone(result) {
+    if (!result.error) {
+        var entry = result.entries[0];
+        console.log(entry.url + "\n" + entry.title);
+        var newFeed = {
+            url: entry.url,
+            title: entry.title
+        };
+        addFeed(newFeed);
+    } else {
+        $("#addError").html("<p>Error finding feed</p>");
+    }
+}
+
+function addFeed(feed) {
+    var list = JSON.parse(localStorage.feeds);
+    list.push(feed);
+    localStorage.feeds = JSON.stringify(list);
+}
+
+// Remove feed from feeds (choose by title)
+
+// Export feeds to file
+var currentFeeds = "data:text;charset=utf-8," + feeds;
+$("#export").attr("href", currentFeeds);
+
+// Import feeds from file (merge if necessary)
+// TODO: How to I get titles if they're not specified?
+$("#feedsFile").change(function(event) {
+    var file = event.target.files[0];
+    console.log(JSON.stringify(file));
+    var reader = new FileReader();
+    reader.onload = (function(file) { // broken
+        return function(e) {
+            var content = e.target.result;
+            localStorage.feeds = JSON.stringify(JSON.parse(content));
+            $("#content").html("<b>Saved to localStorage</b>"
+                +"<pre>"+content+"</pre>");
+        };
+    })(file);
+    reader.readAsText(file);
+});
+    </script>
+    </body>
+</html>
