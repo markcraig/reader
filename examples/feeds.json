@@ -1,66 +1,66 @@
 [
     {
-        "url": "http://andrewgavinmarshall.com/feed/",
-        "title": ""
-    },
-    {
         "url": "http://great-hikes.com/blog/feed/",
-        "title": ""
+        "title": "A Kauai Blog"
     },
     {
         "url": "http://blog.arnaudlacour.com/feeds/posts/default",
-        "title": ""
+        "title": "A Sense Of Identity"
     },
     {
-        "url": "http://www.schneier.com/blog/atom.xml",
-        "title": ""
-    },
-    {
-        "url": "http://feeds2.feedburner.com/clusterfucknation",
-        "title": ""
-    },
-    {
-        "url": "http://www.jwz.org/blog/feed/",
-        "title": ""
-    },
-    {
-        "url": "http://ludopoitou.wordpress.com/feed/",
-        "title": ""
-    },
-    {
-        "url": "http://marginnotes2.wordpress.com/feed/",
-        "title": ""
-    },
-    {
-        "url": "http://www.tri4joe.com/feed/",
-        "title": ""
-    },
-    {
-        "url": "http://www.dirmgr.com/blog/rss.xml",
-        "title": ""
+        "url": "http://andrewgavinmarshall.com/feed/",
+        "title": "Andrew Gavin Marshall"
     },
     {
         "url": "http://chomskydotinfo.blogspot.com/rss.xml",
-        "title": ""
+        "title": "chomsky.info"
+    },
+    {
+        "url": "http://feeds2.feedburner.com/clusterfucknation",
+        "title": "Clusterfuck Nation"
+    },
+    {
+        "url": "http://www.dirmgr.com/blog/rss.xml",
+        "title": "cn=Directory Manager Blog"
     },
     {
         "url": "http://earthly-powers.blogspot.com/rss.xml",
-        "title": ""
+        "title": "Earthly Powers"
     },
     {
-        "url": "http://webmink.com/feed/",
-        "title": ""
+        "url": "https://wikis.forgerock.org/confluence/createrssfeed.action?types=page&type…tom&maxResults=10&timeSpan=5&publicFeed=true&title=ForgeRock+Wiki+RSS+Feed",
+        "title": "ForgeRock Wiki RSS Feed"
+    },
+    {
+        "url": "http://www.jwz.org/blog/feed/",
+        "title": "jwz"
+    },
+    {
+        "url": "http://ludopoitou.wordpress.com/feed/",
+        "title": "Ludo's Sketches"
+    },
+    {
+        "url": "http://marginnotes2.wordpress.com/feed/",
+        "title": "Margin Notes 2.0"
     },
     {
         "url": "https://www.tbray.org/ongoing/ongoing.atom",
-        "title": ""
+        "title": "ongoing by Tim Bray"
     },
     {
-        "url": "https://wikis.forgerock.org/confluence/createrssfeed.action?types=page&types=blogpost&types=mail&types=comment&types=attachment&sort=modified&showContent=true&showDiff=true&spaces=conf_all&labelString=&rssType=atom&maxResults=10&timeSpan=5&publicFeed=true&title=ForgeRock+Wiki+RSS+Feed",
-        "title": ""
+        "url": "http://www.schneier.com/blog/atom.xml",
+        "title": "Schneier on Security"
     },
     {
         "url": "http://thearchdruidreport.blogspot.com/feeds/posts/default",
         "title": "TheArchdruidReport"
+    },
+    {
+        "url": "http://www.tri4joe.com/feed/",
+        "title": "Tri4Joe"
+    },
+    {
+        "url": "http://webmink.com/feed/",
+        "title": "Wild Webmink"
     }
 ]

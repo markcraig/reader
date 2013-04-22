@@ -54,22 +54,18 @@
 
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script type="text/javascript">
-/*
-[
-    {
-        "url": "feed-url",
-        "title": "string"
-    },...
-]
-*/
+
+// Feeds are an array of objects { url, title }.
 var feeds = [];
 
-// Load feeds from local storage
-var test = localStorage.feeds;
-if (test !== undefined) {
-    feeds = test;
+// Load feeds from local storage, sorting by title
+if (localStorage.feeds !== undefined && localStorage.feeds !== "") {
+    feeds = JSON.parse(localStorage.feeds).sort(function(a, b) {
+        return a.title.toString().localeCompare(b.title.toString());
+    });
+    localStorage.feeds = JSON.stringify(feeds);
 }
-console.log("Feeds:\n" + JSON.stringify(feeds, undefined, 2));
+console.log("Loading stored feeds...\n" + localStorage.feeds);
 
 // Add feed to feeds (find from URL)
 google.load("feeds", "1");
@@ -88,26 +84,25 @@ function findDone(result) {
             url: entry.url,
             title: entry.title
         };
-        addFeed(newFeed);
+        storeFeed(newFeed);
     } else {
         $("#addError").html("<p>Error finding feed</p>");
     }
 }
 
-function addFeed(feed) {
-    var list = JSON.parse(localStorage.feeds);
-    list.push(feed);
-    localStorage.feeds = JSON.stringify(list);
+function storeFeed(feed) {
+    feeds.push(feed);
+    localStorage.feeds = JSON.stringify(feeds);
 }
 
 // Remove feed from feeds (choose by title)
 
+
 // Export feeds to file
-var currentFeeds = "data:text;charset=utf-8," + feeds;
+var currentFeeds = "data:text;charset=utf-8," + JSON.stringify(feeds, "", 2);
 $("#export").attr("href", currentFeeds);
 
 // Import feeds from file (merge if necessary)
-// TODO: How to I get titles if they're not specified?
 $("#feedsFile").change(function(event) {
     var file = event.target.files[0];
     console.log(JSON.stringify(file));
@@ -115,9 +110,17 @@ $("#feedsFile").change(function(event) {
     reader.onload = (function(file) {
         return function(e) {
             var content = JSON.parse(e.target.result);
-            localStorage.feeds = JSON.stringify(content);
-            $("#content").html("<b>Saved to localStorage</b>"
-                +"<pre>"+JSON.stringify(content)+"</pre>");
+            localStorage.feeds = e.target.result;
+
+            var htmlList = "<b>Feeds Saved in This Browser</b>";
+            htmlList += "<ul>";
+            for (var i=0; i < content.length; i++) {
+                var href = content[i].url;
+                var title = "<a href='" + href + "'>" + content[i].title + "</a>";
+                htmlList += "<li>" + title + "</li>";
+            }
+            htmlList += "</ul>";
+            $("#content").html(htmlList);
         };
     })(file);
     reader.readAsText(file);
