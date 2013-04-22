@@ -78,7 +78,6 @@ function sortFeeds(feeds) {
 }
 
 function storeFeeds(feeds) {
-    // TODO: uniquify feeds
     localStorage.feeds = JSON.stringify(feeds);    
 }
 
@@ -97,9 +96,15 @@ storeFeeds(feeds);
 
 // Add feed to stored feeds (find from URL)
 function storeFeed(feed) {
-    feeds.push(feed);
-    feeds = sortFeeds(feeds);
-    storeFeeds(feeds);
+    var strFeeds = JSON.stringify(feeds);
+    var strFeed = JSON.stringify(feed);
+    if (strFeeds.indexOf(strFeed) === -1) { // Add only new feeds.
+        feeds.push(feed);
+        feeds = sortFeeds(feeds);
+        storeFeeds(feeds);
+    } else {
+        $("#status").html("<p>" + feed.title + " already stored.</p>");
+    }
 }
 
 google.load("feeds", "1");
