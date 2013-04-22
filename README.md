@@ -1,4 +1,4 @@
-# Feed Reader
+# Reader
 
 This is a project to kick the tires on the [Cloud9 IDE](https://c9.io/).
 
