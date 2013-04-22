@@ -18,10 +18,22 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>Save</title>
+        <title>Configure Your Feeds</title>
         <link rel="stylesheet" type="text/css" href="css/style.css">
     </head>
     <body>
+    
+    <div>
+        <p style="text-align: center;">
+            <b>Configure Your Feeds</b>
+            <span style="font-size: smaller;">
+                <a href="index.html" style="float: left;">Main page</a>    
+                <a href="examples/feeds.json" style="float: right;"
+                   target="_blank">Example feeds file</a>
+            </span>
+        </p>
+        <hr style="clear: both;" />
+    </div>
     
     <div id="addFeed">
         <b>Add Feed</b>
@@ -41,17 +53,17 @@
     </div>
 
     <div id="importFeeds">
-        <b>Import Feeds</b>
+        <b>Upload Feeds</b>
         <form>
-            <label for="feedsFile">Overwrite feeds from JSON file: </label><input
-                id="feedsFile" type="file" accept="application/json" /> 
+            <label for="feedsFile">Overwrite feeds from JSON file: </label>
+            <input id="feedsFile" type="file" accept="application/json" /> 
         </form>
     </div>
 
     <div id="exportFeeds">
-        <b>Export Feeds</b>
+        <b>Download Feeds</b>
         <form>Download your current <a id="export" href="not.set"
-            download="feeds.json">feeds</a> as <code>feeds.json</code>.</form>
+              download="feeds.json">feeds</a> as <code>feeds.json</code>.</form>
     </div>
     
     <hr />
@@ -64,37 +76,21 @@
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="js/reader.js"></script>
+
     <script type="text/javascript">
 
 // Feeds are an array of objects { url, title }.
 // When this script executes, load the feeds currently stored and make sure
 // they are stored sorted by title.
 
-// Sort feeds by title
-function sortFeeds(feeds) {
-    return feeds.sort(function(a, b) {
-        return a.title.toString().localeCompare(b.title.toString());
-    });
-}
-
-function storeFeeds(feeds) {
-    localStorage.feeds = JSON.stringify(feeds);    
-}
-
-function loadFeeds() {
-    if (localStorage.feeds !== undefined && localStorage.feeds !== "") {
-        var feeds = sortFeeds(JSON.parse(localStorage.feeds));
-        return feeds;
-    } else {
-        return [];
-    }
-}
-
 var feeds = loadFeeds();
 listFeeds(feeds);
 storeFeeds(feeds);
 
-// Add feed to stored feeds (find from URL)
+/**
+ * Add feed to stored feeds (find from URL)
+ */
 function storeFeed(feed) {
     var strFeeds = JSON.stringify(feeds);
     var strFeed = JSON.stringify(feed);
@@ -131,7 +127,9 @@ $("#feedUrl").submit(function(event) {
     google.feeds.findFeeds("site:"+site, addFirstFeed);
 });
 
-// Remove feed from stored feeds (user cooses by title)
+/**
+ * Remove feed from stored feeds (user choses by title)
+ */
 function removeFeed(index) {
     var removed = feeds.splice(index, 1);
     storeFeeds(feeds);
@@ -164,7 +162,9 @@ $("#feedList").on("change", function () {
     // console.log(JSON.stringify(feeds));
 });
 
-// Export feeds to file named feeds.json
+/**
+ * Export feeds to file named feeds.json
+ */
 $("#export").attr(
     "href",
     "data:text;charset=utf-8," + JSON.stringify(feeds, "", 2)

@@ -18,16 +18,22 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>Some Feeds</title>
+        <title>Your Feeds</title>
         <link rel="stylesheet" type="text/css" href="css/style.css">
     </head>
     
     <body>
-        <h1>Some Feeds</h1>
+        <a style="float: right; font-size: smaller;" href="save.html">
+            Configure feeds
+        </a>
         
+        <h1>Your Feeds</h1>
+
         <p>This page uses the <a href="https://developers.google.com/feed/v1/"
         >Google Feed API</a>. It sets a cookie to avoid displaying items
         that you have already seen.</p>
+                
+        <hr style="clear: both;" />
         
         <div id="feed"></div>
 
@@ -61,28 +67,13 @@
 
         </script>
 
+        <script type="text/javascript" src="js/reader.js"></script>
         <script type="text/javascript">
 var source   = $("#feed-template").html();
 var template = Handlebars.compile(source);
 
 // Choice of feeds (static for now).
-var myFeeds = [
-    "http://andrewgavinmarshall.com/feed/",
-    "http://great-hikes.com/blog/feed/",
-    "http://blog.arnaudlacour.com/feeds/posts/default",
-    "http://www.schneier.com/blog/atom.xml",
-    "http://feeds2.feedburner.com/clusterfucknation",
-    "http://www.jwz.org/blog/feed/",
-    "http://ludopoitou.wordpress.com/feed/",
-    "http://marginnotes2.wordpress.com/feed/",
-    "http://www.tri4joe.com/feed/",
-    "http://www.dirmgr.com/blog/rss.xml",
-    "http://chomskydotinfo.blogspot.com/rss.xml",
-    "http://earthly-powers.blogspot.com/rss.xml",
-    "http://webmink.com/feed/",
-    "https://www.tbray.org/ongoing/ongoing.atom",
-    "https://wikis.forgerock.org/confluence/createrssfeed.action?types=page&types=blogpost&types=mail&types=comment&types=attachment&sort=modified&showContent=true&showDiff=true&spaces=conf_all&labelString%3D&rssType=atom&maxResults=10&timeSpan=5&publicFeed=true&title=ForgeRock+Wiki+RSS+Feed"
-];
+var myFeeds = loadFeeds();
 
 // Reader Last Visit
 var cookieName = 'RLV';
@@ -94,12 +85,11 @@ google.load("feeds", "1");
 
 /**
  * Template feeds and display them in the page.
- * TODO: Move display to run when feeds are obtained.
  */
 function process(result) {
     if (!result.error) {
         var theEntries = [];
-        for (var j = 0; j < result.feed.entries.length;j++) {
+        for (var j = 0; j < result.feed.entries.length; j++) {
             var entry = result.feed.entries[j];
             if (lastVisit !== undefined
                 && lastVisit > new Date(entry.publishedDate)) {
@@ -135,12 +125,12 @@ function initialize() {
     }
     
     for(var i = 0; i < myFeeds.length; i++) {
-        var feed = new google.feeds.Feed(myFeeds[i]);
+        var feed = new google.feeds.Feed(myFeeds[i].url);
         feed.load(process);
     }
     
     // Let the last visit expire after a week.
-    $.cookie(cookieName, (new Date()).toString(), { expires: 7 });
+    //$.cookie(cookieName, (new Date()).toString(), { expires: 7 });
 }
 
 google.setOnLoadCallback(initialize);

@@ -28,7 +28,7 @@
         "title": "Earthly Powers"
     },
     {
-        "url": "https://wikis.forgerock.org/confluence/createrssfeed.action?types=page&type…tom&maxResults=10&timeSpan=5&publicFeed=true&title=ForgeRock+Wiki+RSS+Feed",
+        "url": "https://wikis.forgerock.org/confluence/createrssfeed.action?types=page&types=blogpost&types=mail&types=comment&types=attachment&sort=modified&showContent=true&showDiff=true&spaces=conf_all&labelString%3D&rssType=atom&maxResults=10&timeSpan=5&publicFeed=true&title=ForgeRock+Wiki+RSS+Feed",
         "title": "ForgeRock Wiki RSS Feed"
     },
     {
