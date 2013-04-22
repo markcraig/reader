@@ -28,7 +28,15 @@
         <form id="feedUrl">
             <label for="addUrl">Site URL: </label><input id="addUrl"
                 type="url" size="60" />
-            <div id="addError"></div>
+        </form>
+    </div>
+
+    <div id="removeFeed">
+        <b>Remove Feed</b>
+        <form>
+            <select id="feedList">
+                <option>Select feed to remove</option>
+            </select>
         </form>
     </div>
 
@@ -37,7 +45,6 @@
         <form>
             <label for="feedsFile">Overwrite feeds from JSON file: </label><input
                 id="feedsFile" type="file" accept="application/json" /> 
-            <div id="content"></div>
         </form>
     </div>
 
@@ -46,6 +53,10 @@
         <form>Download your current <a id="export" href="not.set"
             download="feeds.json">feeds</a> as <code>feeds.json</code>.</form>
     </div>
+    
+    <hr />
+
+    <div id="status"></div>
 
     <!--
         For loading the feed API
@@ -56,27 +67,44 @@
     <script type="text/javascript">
 
 // Feeds are an array of objects { url, title }.
-var feeds = [];
+// When this script executes, load the feeds currently stored and make sure
+// they are stored sorted by title.
 
-// Load feeds from local storage, sorting by title
-if (localStorage.feeds !== undefined && localStorage.feeds !== "") {
-    feeds = JSON.parse(localStorage.feeds).sort(function(a, b) {
+// Sort feeds by title
+function sortFeeds(feeds) {
+    return feeds.sort(function(a, b) {
         return a.title.toString().localeCompare(b.title.toString());
     });
-    localStorage.feeds = JSON.stringify(feeds);
 }
-console.log("Loading stored feeds...\n" + localStorage.feeds);
 
-// Add feed to feeds (find from URL)
+function storeFeeds(feeds) {
+    // TODO: uniquify feeds
+    localStorage.feeds = JSON.stringify(feeds);    
+}
+
+function loadFeeds() {
+    if (localStorage.feeds !== undefined && localStorage.feeds !== "") {
+        var feeds = sortFeeds(JSON.parse(localStorage.feeds));
+        return feeds;
+    } else {
+        return [];
+    }
+}
+
+var feeds = loadFeeds();
+listFeeds(feeds);
+storeFeeds(feeds);
+
+// Add feed to stored feeds (find from URL)
+function storeFeed(feed) {
+    feeds.push(feed);
+    feeds = sortFeeds(feeds);
+    storeFeeds(feeds);
+}
+
 google.load("feeds", "1");
-$("#feedUrl").submit(function(event) {
-    event.preventDefault();
-    var site = $("#addUrl").val().replace(/^http(s)?:\/\//, "");
-    console.log(site);
-    google.feeds.findFeeds("site:"+site, findDone);
-});
 
-function findDone(result) {
+function addFirstFeed(result) {
     if (!result.error) {
         var entry = result.entries[0];
         console.log(entry.url + "\n" + entry.title);
@@ -85,24 +113,76 @@ function findDone(result) {
             title: entry.title
         };
         storeFeed(newFeed);
+        listFeeds(feeds);
     } else {
-        $("#addError").html("<p>Error finding feed</p>");
+        $("#status").html("<p>No feed was found.</p>");
     }
 }
 
-function storeFeed(feed) {
-    feeds.push(feed);
-    localStorage.feeds = JSON.stringify(feeds);
+$("#feedUrl").submit(function(event) {
+    event.preventDefault();
+    var site = $("#addUrl").val().replace(/^http(s)?:\/\//, "");
+    // console.log(site);
+    google.feeds.findFeeds("site:"+site, addFirstFeed);
+});
+
+// Remove feed from stored feeds (user cooses by title)
+function removeFeed(index) {
+    var removed = feeds.splice(index, 1);
+    storeFeeds(feeds);
+    return removed[0];
 }
 
-// Remove feed from feeds (choose by title)
+$("#feedList").on("focus", function() {
+    for (var i = 0; i < feeds.length; i++) {
+        var option = document.createElement("option");
+        option.textContent = option.value = feeds[i].title;
+        document.getElementById("feedList").appendChild(option);
+    }
+});
 
+$("#feedList").on("change", function () {
+    // console.log("Selected: " + $(this).val());
+    var i = 0;
+    for (i; i < feeds.length; i++) {
+        if (feeds[i].title === $(this).val()) {
+            break;
+        }
+    }
+    // console.log("Index: " + i);
+    var removed = removeFeed(i);
+    
+    $("#status").html(
+        "<p>Removed feed: <a href='" + removed.url + "'>"
+        + removed.title + "</a></p>"
+    );
+    // console.log(JSON.stringify(feeds));
+});
 
-// Export feeds to file
-var currentFeeds = "data:text;charset=utf-8," + JSON.stringify(feeds, "", 2);
-$("#export").attr("href", currentFeeds);
+// Export feeds to file named feeds.json
+$("#export").attr(
+    "href",
+    "data:text;charset=utf-8," + JSON.stringify(feeds, "", 2)
+);
 
-// Import feeds from file (merge if necessary)
+// Import feeds from JSON file (merge if necessary)
+function listFeeds(feeds) {
+    var htmlList = "<p>Feeds currently saved in this browser:</p>";
+    if (feeds.length === 0) {
+        $("#status").html("<p>No feeds are saved.</p>");
+    }
+
+    htmlList += "<ul>";
+    for (var i=0; i < feeds.length; i++) {
+        var href = feeds[i].url;
+        var title = "<a href='" + href + "'>" + feeds[i].title + "</a>";
+        htmlList += "<li>" + title + "</li>";
+    }
+    htmlList += "</ul>";
+    $("#status").html(htmlList);
+  
+}
+
 $("#feedsFile").change(function(event) {
     var file = event.target.files[0];
     console.log(JSON.stringify(file));
@@ -110,17 +190,9 @@ $("#feedsFile").change(function(event) {
     reader.onload = (function(file) {
         return function(e) {
             var content = JSON.parse(e.target.result);
-            localStorage.feeds = e.target.result;
-
-            var htmlList = "<b>Feeds Saved in This Browser</b>";
-            htmlList += "<ul>";
-            for (var i=0; i < content.length; i++) {
-                var href = content[i].url;
-                var title = "<a href='" + href + "'>" + content[i].title + "</a>";
-                htmlList += "<li>" + title + "</li>";
-            }
-            htmlList += "</ul>";
-            $("#content").html(htmlList);
+            content = sortFeeds(content);
+            storeFeeds(content);
+            listFeeds(content);
         };
     })(file);
     reader.readAsText(file);
