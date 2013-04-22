@@ -8,8 +8,11 @@ to read some feeds, and then displays the results as the body of the page.
 It sets a cookie when you visit. On the next visit, it displays
 only entries that have not already been read.
 
+At present, feeds are stored in the browser's local storage. The app is
+completely client side. It would be cool if the feeds could be stored
+in a user profile somewhere.
+
 ## TODO
-*   If all feeds are empty, show "Nothing new to read."
 *   Store feed lists by user somewhere. (OAuth 2.0 enough for this?)
 
 * * *
