@@ -11,7 +11,6 @@ only entries that have not already been read.
 ## TODO
 *   If all feeds are empty, show "Nothing new to read."
 *   Store feed lists by user somewhere. (OAuth 2.0 enough for this?)
-*   Beautify the layout.
 
 * * *
 This work is licensed under the Creative Commons
