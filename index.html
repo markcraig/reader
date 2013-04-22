@@ -130,7 +130,7 @@ function initialize() {
     }
     
     // Let the last visit expire after a week.
-    //$.cookie(cookieName, (new Date()).toString(), { expires: 7 });
+    $.cookie(cookieName, (new Date()).toString(), { expires: 7 });
 }
 
 google.setOnLoadCallback(initialize);
