@@ -12,7 +12,7 @@ At present, feeds are stored in the browser's local storage. The app is
 completely client side. It would be cool if the feeds could be stored
 in a user profile somewhere.
 
-## To do
+## To Do
 *   Store feed lists by user somewhere. (OAuth 2.0 enough for this?)
 
 * * *
