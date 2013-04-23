@@ -13,7 +13,8 @@ completely client side. It would be cool if the feeds could be stored
 in a user profile somewhere.
 
 ## To Do
-*   Store feed lists by user somewhere. (OAuth 2.0 enough for this?)
+*   Store feed lists by user. Perhaps use the
+    [Google Drive API](https://developers.google.com/drive/quickstart-js)?
 
 * * *
 This work is licensed under the Creative Commons
