@@ -80,7 +80,7 @@
 var source   = $("#feed-template").html();
 var template = Handlebars.compile(source);
 
-// Choice of feeds (static for now).
+// Choice of feeds
 var myFeeds = loadFeeds();
 
 // Reader Last Visit
@@ -102,6 +102,8 @@ function process(result) {
             if (lastVisit !== undefined
                 && lastVisit > new Date(entry.publishedDate)) {
                 continue;    
+            } else {
+                $("#feed").html("<!-- Remove message about nothing to read -->");
             }
 
             theEntries.push({
