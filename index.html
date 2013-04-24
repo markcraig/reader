@@ -81,6 +81,7 @@ var lastVisit;
 
 google.load("feeds", "1");
 
+var doRemoveNoFeedsNote = true;
 /**
  * Template feeds and display them in the page.
  */
@@ -93,7 +94,10 @@ function process(result) {
                 && lastVisit > new Date(entry.publishedDate)) {
                 continue;    
             } else {
-                $("#feed").html("<!-- Remove message about nothing to read -->");
+                if (doRemoveNoFeedsNote) {
+                    $("#feed").html("<!-- Remove message about nothing to read -->");
+                    doRemoveNoFeedsNote = false;
+                }
             }
 
             theEntries.push({
