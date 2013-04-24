@@ -14,7 +14,7 @@ in a user profile somewhere.
 
 ## To Do
 *   Store feed lists by user. Perhaps use the
-    [Google Drive API](https://developers.google.com/drive/quickstart-js)?
+    [Google Cloud Storage JSON API](https://developers.google.com/storage/docs/json_api/v1/)?
 
 * * *
 This work is licensed under the Creative Commons
