@@ -14,14 +14,6 @@ body {
     max-width: 640px;
 }
 
-a {
-    text-decoration: none;
-}
-
-a:active, a:hover {
-    color: #f58220;
-}
-
 .banner {
     color: #ccc;
     background-color: #333;
@@ -43,6 +35,18 @@ a:active, a:hover {
     top: 45px;
     right: -95px;
     text-align: center;
+}
+
+a {
+    text-decoration: none;
+}
+
+.banner a {
+    color: #fff;
+}
+
+a:active, a:hover {
+    color: #f58220;
 }
 
 hr {
