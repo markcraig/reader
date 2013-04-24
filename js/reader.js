@@ -6,6 +6,9 @@
  * Copyright 2013 Mark Craig
  */
 
+/** Reader Last Visit */
+var cookieName = 'RLV';
+
 /**
  * Sort feeds by title
  */

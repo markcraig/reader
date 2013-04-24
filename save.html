@@ -58,6 +58,14 @@
               download="feeds.json">feeds</a> as <code>feeds.json</code>.</form>
     </div>
     
+    <div>
+        <b>Reset Reader</b>
+        <form>
+            <label for="reset">Re-read old feeds: </label>
+            <input id="reset" type="button" value="Reset">
+        </form>
+    </div>
+    
     <hr />
 
     <div id="status"></div>
@@ -69,6 +77,7 @@
 
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script type="text/javascript" src="js/reader.js"></script>
+    <script type="text/javascript" src="js/jquery.cookie.js"></script>
 
     <script type="text/javascript">
 
@@ -193,6 +202,14 @@ $("#feedsFile").change(function(event) {
         };
     })(file);
     reader.readAsText(file);
+});
+
+/**
+ * Delete cookie to re-read old feeds.
+ */
+$("#reset").click(function() {
+    $.removeCookie(cookieName);
+    $("#status").html("<p>Return to <a href='index.html'>main page</a> to re-read feeds.</p>");
 });
     </script>
     </body>
