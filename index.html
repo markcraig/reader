@@ -134,7 +134,9 @@ function initialize() {
     }
     
     // Let the last visit expire after a week.
-    $.cookie(cookieName, (new Date()).toString(), { expires: 7 });
+    if (myFeeds.length > 0) { // Do not set if there are no feeds
+        $.cookie(cookieName, (new Date()).toString(), { expires: 7 });
+    }
 }
 
 google.setOnLoadCallback(initialize);
