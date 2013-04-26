@@ -6,7 +6,6 @@
  * Copyright 2013 Mark Craig
  */
 
-/* Run the text down the center of a 640px page. */
 body {
     font-family: Verdana, Helvetica, Arial, sans-serif;
     margin-left: auto;
@@ -47,6 +46,20 @@ a {
 
 a:active, a:hover {
     color: #f58220;
+}
+
+#leftmenu {
+    position: absolute;
+    left: 20px;
+    overflow: hidden;
+}
+
+.menuitem {
+    height: 1.3em;
+}
+
+.menuitem:before {
+    content: "» ";
 }
 
 hr {

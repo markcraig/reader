@@ -36,6 +36,8 @@
                 
         <hr style="clear: both;" />
         
+        <div id="leftmenu"></div>
+        
         <div id="feed"><p style="text-align: center; color: #aaa;"
         >Nothing to read right now</p></div>
 
@@ -57,7 +59,7 @@
         <script type="text/javascript" src="js/handlebars.js"></script>        
         <script id="feed-template" type="text/x-handlebars-template">
         
-            <div class="feed">
+            <div class="feed" id="{{index}}">
               <a href="{{link}}" target="_blank"><h2>{{feed}}</h2></a>
               {{#each entries}}
               <div class="entry">
@@ -68,11 +70,18 @@
             </div>
 
         </script>
+        <script id="leftmenu-template" type="text/x-handlebars-template">
+            
+            <div class="menuitem"><a href="#{{index}}">{{title}}</a></div>
+            
+        </script>
 
         <script type="text/javascript" src="js/reader.js"></script>
         <script type="text/javascript">
 var source   = $("#feed-template").html();
 var template = Handlebars.compile(source);
+var menuSrc  = $("#leftmenu-template").html();
+var leftmenu = Handlebars.compile(menuSrc);
 
 // Choice of feeds
 var myFeeds = loadFeeds();
@@ -109,7 +118,15 @@ function process(result) {
         }
 
         if (theEntries.length) {
+            var theIndex = result.feed.title.toString().replace(/\W/g, '');
+
+            $("#leftmenu").append(leftmenu({
+                index: theIndex,
+                title: result.feed.title
+            }));
+
             $("#feed").append(template({
+                index: theIndex,
                 link: result.feed.link,
                 feed: result.feed.title,
                 entries: theEntries
