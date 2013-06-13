@@ -26,7 +26,8 @@
         <p>
             This page uses the <a href="https://developers.google.com/feed/v1/"
             target="_blank">Google Feed API</a>. It sets a cookie to avoid
-            displaying items that you have already seen.
+            displaying items that you have already seen. But you can click
+            the Reload button to delete the cookie and reload all feeds.
         </p>
         <p>
             This page stores the list of your feeds in your browser's local
@@ -164,6 +165,22 @@ function initialize() {
 }
 
 google.setOnLoadCallback(initialize);
+
+function removeCookie() {
+    $.removeCookie(cookieName);
+    window.location.reload();
+}
     </script>
+    
+    <hr style="clear: both;" />
+    <p style="float:right;">
+        <button type="button" onclick="removeCookie()">Reload</button>    
+    </p>
+    
+    <p style="clear: both; color: #aaa; position: fixed; bottom: 0;
+              text-align: center; left: 0; right: 0; font-size: smaller;">
+        Copyright 2013 Mark Craig,
+        License <a href="http://mozilla.org/MPL/2.0/">MPL 2.0</a> 
+    </p>
     </body>
 </html>
