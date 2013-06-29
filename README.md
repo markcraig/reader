@@ -8,13 +8,13 @@ to read some feeds, and then displays the results as the body of the page.
 It sets a cookie when you visit. On the next visit, it displays
 only entries that have not already been read.
 
-At present, feeds are stored in the browser's local storage. The app is
-completely client side. It would be cool if the feeds could be stored
-in a user profile somewhere.
+At present, feed lists are stored in the browser's local storage. This
+does not work well if you use more than one browser.
 
 ## To Do
-*   Store feed lists by user. Perhaps use the
-    [Google Cloud Storage JSON API](https://developers.google.com/storage/docs/json_api/v1/)?
+*   Store feed metadata for sharing across browsers. Perhaps use the
+    [Dropbox API](https://www.dropbox.com/developers/core/docs)?
+*   Investigate a more standard format for feed metadata.
 
 * * *
 This Source Code Form is subject to the terms of the Mozilla Public
