@@ -56,7 +56,7 @@ var client;
  */
 function signInWithDropbox() {
     OAuth.initialize('1l8ho8v29rinx6f');
-    OAuth.popup('dropbox', function(error, result) { //TODO: use redirect as popup is blocked
+    OAuth.popup('dropbox', function(error, result) { //TODO: popup is blocked
         if (error) {
             alert('Failed to get access to Dropbox: ' + error);
         }
