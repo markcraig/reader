@@ -36,3 +36,52 @@ function loadFeeds() {
         return [];
     }
 }
+
+/**
+ * Whether to store reader data in Dropbox.
+ */
+var useDropbox = false;
+
+/**
+ * Dropbox client for Datastore API.
+ * 
+ * The client can save feeds in the reader's Dropbox,
+ * enabling synchronization across browsers.
+ */
+var client;
+
+/**
+ * Get access token with reader interaction.
+ * Access token is not returned, but instead kept by the Datastore API.
+ */
+function signInWithDropbox() {
+    OAuth.initialize('1l8ho8v29rinx6f');
+    OAuth.popup('dropbox', function(error, result) { //TODO: use redirect as popup is blocked
+        if (error) {
+            alert('Failed to get access to Dropbox: ' + error);
+        }
+      //use result.access_token in your API request
+        console.log('Access token: ' + result.access_token);
+        client = new Dropbox.Client({
+            key: "1l8ho8v29rinx6f",
+            token: result.access_token
+        });
+    });
+    // client.authenticate();
+    useDropbox = true;
+    console.log("Client is using Dropbox.");
+}
+
+/**
+ * Get access token without reader interaction.
+ * Access token is not returned, but instead kept by the Datastore API.
+ */
+function signInWithDropboxQuietly() {
+    client = new Dropbox.Client({key: "1l8ho8v29rinx6f"}); // TODO use OAuth.io instead.
+    // Try to finish OAuth authorization.
+    client.authenticate({interactive: false}, function (error) {
+        if (error) {
+            alert('Authentication error: ' + error);
+        }
+    });
+}

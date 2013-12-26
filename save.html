@@ -28,6 +28,13 @@
         <hr style="clear: both;" />
     </div>
     
+    <div id="useDropbox">
+        <b>Store Data in Dropbox</b>
+        <form>
+            <input id="dropbox" type="button" value="Use Dropbox">
+        </form>
+    </div>
+
     <div id="addFeed">
         <b>Add Feed</b>
         <form id="feedUrl">
@@ -77,6 +84,8 @@
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="js/oauth.js"></script>
+    <script type="text/javascript" src="js/dropbox-datastores-1.0.0.js"></script>
     <script type="text/javascript" src="js/reader.js"></script>
     <script type="text/javascript" src="js/jquery.cookie.js"></script>
 
@@ -121,6 +130,11 @@ function addFirstFeed(result) {
         $("#status").html("<p>No feed was found.</p>");
     }
 }
+
+$("#dropbox").submit(function(event) {
+    event.preventDefault();
+    signInWithDropbox();
+});
 
 $("#feedUrl").submit(function(event) {
     event.preventDefault();
