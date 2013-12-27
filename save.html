@@ -31,7 +31,8 @@
     <div id="useDropbox">
         <b>Store Data in Dropbox</b>
         <form>
-            <input id="dropbox" type="button" value="Use Dropbox">
+            <input id="dropbox" type="button" value="Use Dropbox"
+                   onclick="client.authenticate(); return false;">
         </form>
     </div>
 
@@ -130,11 +131,6 @@ function addFirstFeed(result) {
         $("#status").html("<p>No feed was found.</p>");
     }
 }
-
-$("#dropbox").submit(function(event) {
-    event.preventDefault();
-    signInWithDropbox();
-});
 
 $("#feedUrl").submit(function(event) {
     event.preventDefault();

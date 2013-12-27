@@ -19,17 +19,53 @@ function sortFeeds(feeds) {
 }
 
 /**
- * Store feeds in local storage.
+ * Store feeds.
  */
 function storeFeeds(feeds) {
-    localStorage.feeds = JSON.stringify(feeds);    
+    if (useDropbox) {
+        
+        var datastoreManager = client.getDatastoreManager();
+        datastoreManager.openDefaultDatastore(function (error, datastore) {
+            
+            var feedsTable = datastore.getTable('feeds');
+            for (var feed in feeds) {
+                console.log(JSON.stringify(feed, null, 2)); // TODO: this is "0" when storing feeds from file???
+                var existingFeed = feedsTable.get(feed.url);
+                if (!existingFeed) {
+                    feedsTable.insert(feed);
+                }
+            }
+
+        });
+        datastoreManager.close();
+
+    } else {
+        localStorage.feeds = JSON.stringify(feeds);
+    }
 }
 
 /**
- * Return feeds from local storage.
+ * Return feeds.
  */
 function loadFeeds() {
-    if (localStorage.feeds !== undefined && localStorage.feeds !== "") {
+    if (useDropbox) {
+        
+        var theFeeds = [];
+        
+        var datastoreManager = client.getDatastoreManager();
+        datastoreManager.openDefaultDatastore(function (error, datastore) {
+            
+            var feedsTable = datastore.getTable('feeds');
+            for (var feed in feedsTable.query()) {
+                theFeeds.push({ url: feed.url, title: feed.title});
+            }
+
+        });
+        datastoreManager.close();
+
+        return (theFeeds.length > 0) ? sortFeeds(theFeeds) : [];
+        
+    } else if (localStorage.feeds !== undefined && localStorage.feeds !== "") {
         var feeds = sortFeeds(JSON.parse(localStorage.feeds));
         return feeds;
     } else {
@@ -48,40 +84,33 @@ var useDropbox = false;
  * The client can save feeds in the reader's Dropbox,
  * enabling synchronization across browsers.
  */
-var client;
+var client = new Dropbox.Client({key: "1l8ho8v29rinx6f"});
 
-/**
- * Get access token with reader interaction.
- * Access token is not returned, but instead kept by the Datastore API.
- */
-function signInWithDropbox() {
-    OAuth.initialize('1l8ho8v29rinx6f');
-    OAuth.popup('dropbox', function(error, result) { //TODO: popup is blocked
+
+client.authenticate({interactive: false}, function (error) {
+    if (error) {
+        alert('Authentication error: ' + error);
+    }
+});
+
+if (client.isAuthenticated()) {
+    /* Remove feeds content
+    var datastoreManager = client.getDatastoreManager();
+    datastoreManager.openDefaultDatastore(function (error, datastore) {
         if (error) {
-            alert('Failed to get access to Dropbox: ' + error);
+            alert('Error opening default datastore: ' + error);
         }
-      //use result.access_token in your API request
-        console.log('Access token: ' + result.access_token);
-        client = new Dropbox.Client({
-            key: "1l8ho8v29rinx6f",
-            token: result.access_token
-        });
+
+        if (datastore.listTableIds().indexOf('feeds') !== -1) {
+            var feedsTable = datastore.getTable('feeds');
+            var theFeeds = feedsTable.query();
+            for (var i = 0; i < theFeeds.length; i++) theFeeds[i].deleteRecord();
+        }
     });
-    // client.authenticate();
+    datastoreManager.close();
+    */
+
     useDropbox = true;
+    $('#useDropbox').hide();
     console.log("Client is using Dropbox.");
-}
-
-/**
- * Get access token without reader interaction.
- * Access token is not returned, but instead kept by the Datastore API.
- */
-function signInWithDropboxQuietly() {
-    client = new Dropbox.Client({key: "1l8ho8v29rinx6f"}); // TODO use OAuth.io instead.
-    // Try to finish OAuth authorization.
-    client.authenticate({interactive: false}, function (error) {
-        if (error) {
-            alert('Authentication error: ' + error);
-        }
-    });
 }
