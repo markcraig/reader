@@ -22,17 +22,17 @@ function sortFeeds(feeds) {
  * Store feeds.
  */
 function storeFeeds(feeds) {
+    
     if (useDropbox) {
         
         var datastoreManager = client.getDatastoreManager();
         datastoreManager.openDefaultDatastore(function (error, datastore) {
             
             var feedsTable = datastore.getTable('feeds');
-            for (var feed in feeds) {
-                console.log(JSON.stringify(feed, null, 2)); // TODO: this is "0" when storing feeds from file???
-                var existingFeed = feedsTable.get(feed.url);
-                if (!existingFeed) {
-                    feedsTable.insert(feed);
+            for (var i = 0; i < feeds.length; i++) {
+                var results = feedsTable.query({url: feeds[i].url});
+                if (results.length === 0) {
+                    feedsTable.insert(feeds[i]);
                 }
             }
 
@@ -56,13 +56,20 @@ function loadFeeds() {
         datastoreManager.openDefaultDatastore(function (error, datastore) {
             
             var feedsTable = datastore.getTable('feeds');
-            for (var feed in feedsTable.query()) {
-                theFeeds.push({ url: feed.url, title: feed.title});
+            var feeds = feedsTable.query();
+            for (var i = 0; i < feeds.length; i++) {
+                theFeeds.push({
+                    url: feeds[i].get('url'),
+                    title: feeds[i].get('title')
+                });
             }
+            console.log(theFeeds.length); // 16...
 
         });
         datastoreManager.close();
 
+        console.log(theFeeds.length); // ...0 because this returns before line 66.
+        // TODO: make the return statement wait until the callback completes.
         return (theFeeds.length > 0) ? sortFeeds(theFeeds) : [];
         
     } else if (localStorage.feeds !== undefined && localStorage.feeds !== "") {
@@ -103,8 +110,8 @@ if (client.isAuthenticated()) {
 
         if (datastore.listTableIds().indexOf('feeds') !== -1) {
             var feedsTable = datastore.getTable('feeds');
-            var theFeeds = feedsTable.query();
-            for (var i = 0; i < theFeeds.length; i++) theFeeds[i].deleteRecord();
+            var results = feedsTable.query();
+            for (var i = 0; i < results.length; i++) results[i].deleteRecord();
         }
     });
     datastoreManager.close();
