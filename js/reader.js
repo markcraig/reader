@@ -51,7 +51,7 @@ function loadFeeds() {
     if (useDropbox) {
         
         var theFeeds = [];
-        
+
         var datastoreManager = client.getDatastoreManager();
         datastoreManager.openDefaultDatastore(function (error, datastore) {
             
@@ -63,15 +63,15 @@ function loadFeeds() {
                     title: feeds[i].get('title')
                 });
             }
-            console.log(theFeeds.length); // 16...
 
         });
         datastoreManager.close();
-
-        console.log(theFeeds.length); // ...0 because this returns before line 66.
-        // TODO: make the return statement wait until the callback completes.
-        return (theFeeds.length > 0) ? sortFeeds(theFeeds) : [];
         
+        // TODO: The return must wait for the datastore queries to finish.
+        // See https://www.dropbox.com/developers/browse_datastores/381904
+        // for expected content.
+        return (theFeeds.length > 0) ? sortFeeds(theFeeds) : [];
+
     } else if (localStorage.feeds !== undefined && localStorage.feeds !== "") {
         var feeds = sortFeeds(JSON.parse(localStorage.feeds));
         return feeds;
