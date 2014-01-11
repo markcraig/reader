@@ -1,4 +1,67 @@
 <!--
+ ! This Source Code Form is subject to the terms of the Mozilla Public
+ ! License, v. 2.0. If a copy of the MPL was not distributed with this
+ ! file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ !
+ ! Copyright 2014 Mark Craig
+-->
+
+<form class="form-horizontal" role="form">
+
+    <div class="form-group">
+
+        <label for="inputSiteUrl" class="col-sm-2 control-label">Add feed</label>
+        <div class="col-sm-8">
+            <input id="inputSiteUrl" class="form-control" type="url" placeholder="Site URL">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="inputFeedToRemove" class="col-sm-2 control-label">Remove feed</label>
+        <div class="col-sm-4">
+            <select id="inputFeedToRemove" class="form-control">
+                <option>Select feed to remove</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="inputFeedsFile" class="col-sm-2 control-label">Upload feeds.json</label>
+        <div class="col-sm-4">
+            <input id="inputFeedsFile" class="form-control" type="file" accept="application/json">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="inputDownloadFeeds" class="col-sm-2 control-label">Download</label>
+        <div class="col-sm-4">
+            <a id="inputDownloadFeeds" class="form-control" href="data:text;charset=utf-8,[]" download="feeds.json">feeds.json</a>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="exampleFeeds" class="col-sm-2 control-label">Example</label>
+        <div class="col-sm-4">
+            <a id="exampleFeeds" class="form-control" href="feeds.json">feeds.json</a>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="inputStoreBookmarks" class="col-sm-2 control-label">Store bookmarks</label>
+        <div class="col-sm-4">
+            <input id="inputStoreBookmarks" class="form-control" type="checkbox"> (Requires Dropbox)
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="inputReload" class="col-sm-2 control-label">Reread old feeds</label>
+        <div class="col-sm-4">
+            <input id="inputReload" class="form-control" type="button" value="Reload">
+        </div>
+    </div>
+
+</form>
+<!--
 
     Add feed [Site URL] (or browse to site?)
 

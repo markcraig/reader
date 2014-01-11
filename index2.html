@@ -63,16 +63,20 @@
     </div>
 
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-2">
             &nbsp;
         </div>
+        <div class="col-md-6">
+            <a href="#">
+                Read feeds
+            </a>
+        </div>
         <div class="col-md-4">
-            <a href="save.html">
+            <a href="#/configure">
                 Configure feeds
             </a>
         </div>
     </div>
-
 
     <div class="row">
         <div class="col-md-2">&nbsp;</div>
@@ -80,38 +84,15 @@
 
             <h1>Reader</h1>
 
-            <p>
-                This page uses the
-                <a href="https://developers.google.com/feed/v1/"
-                   target="_blank">Google Feed API</a>.
-                It sets a cookie to avoid displaying items
-                that you have already seen.
-                But you can click the Reload button
-                to delete the cookie and reload all feeds.
-            </p>
-
-            <p>
-                This page stores the list of your feeds
-                in your browser's local storage,
-                so before you change browsers, download your list of feeds.
-                You can then upload the list in the other browser.
-            </p>
         </div>
         <div class="col-md-2">&nbsp;</div>
     </div>
 
+    <div ng-view></div>
 
-    <div class="row">
-        <div class="col-md-2">&nbsp;</div>
-        <div class="col-md-8">
-            <div ng-view></div>
-            <button type="button" class="btn btn-default pull-right">Reload</button>
-        </div>
-        <div class="col-md-2">&nbsp;</div>
-    </div>
 </div>
 
-<footer class="text-center">
+<footer class="text-center navbar-fixed-bottom">
     <p class="text-muted">
         Copyright 2013-2014 Mark Craig,
         License <a href="http://mozilla.org/MPL/2.0/">MPL 2.0</a>

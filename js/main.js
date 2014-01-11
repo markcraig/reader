@@ -15,4 +15,10 @@ angular.module('main', ['ngRoute', 'ui.bootstrap'])
                     $scope.message = 'Nothing to read right now';
                 }
             })
+            .when('/configure', {
+                templateUrl: 'partials/configure.html',
+                controller: function($scope) {
+                    // Nothing yet
+                }
+            })
     });
