@@ -21,75 +21,46 @@
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
         .nav, .pagination, .carousel a { cursor: pointer; }
-
-        .banner {
-            color: #ccc;
-            background-color: #333;
-            -moz-box-shadow: 2px 2px 20px #868686;
-            -moz-transform: rotate(45deg);
-            -moz-transform-origin: 50% 50%;
-            -o-transform: rotate(45deg);
-            -o-transform-origin: 50% 50%;
-            -webkit-box-shadow: 2px 2px 20px #868686;
-            -webkit-transform: rotate(45deg);
-            -webkit-transform-origin: 50% 50%;
-            -ms-transform: rotate(45deg);
-            -ms-transform-origin: 50% 50%;
-            box-shadow: 2px 2px 20px #868686;
-            transform: rotate(45deg);
-            transform-origin: 50% 50%;
-            position: fixed;
-            width: 300px;
-            top: 45px;
-            right: -95px;
-            text-align: center;
-        }
-
-        .banner a {
-            color: #fff;
-        }
     </style>
 </head>
 
 <body>
 
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+        <ul class="nav navbar-nav">
+            <li><a href="#">Read feeds</a></li>
+            <li><a href="#/configure">Configure feeds</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="jumbotron">
+    <div class="container">
+        <h1>Reader</h1>
+
+        <p>
+            This page uses the
+            <a href="https://developers.google.com/feed/v1/"
+               target="_blank">Google Feed API</a>.
+            It sets a cookie to avoid displaying items
+            that you have already seen.
+            But you can click the Reload button
+            to delete the cookie and reload all feeds.
+        </p>
+
+        <p>
+            This page stores the list of your feeds
+            in your browser's local storage,
+            so before you change browsers, download your list of feeds.
+            You can then upload the list in the other browser.
+        </p>
+
+    </div>
+</div>
+
 <div class="container">
-
-    <div class="banner">
-        <a href="https://github.com/markcraig/reader"
-           target="_blank">
-            Fork me
-        </a>
-    </div>
-
-    <div class="row">
-        <div class="col-md-2">
-            &nbsp;
-        </div>
-        <div class="col-md-6">
-            <a href="#">
-                Read feeds
-            </a>
-        </div>
-        <div class="col-md-4">
-            <a href="#/configure">
-                Configure feeds
-            </a>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-2">&nbsp;</div>
-        <div class="col-md-8">
-
-            <h1>Reader</h1>
-
-        </div>
-        <div class="col-md-2">&nbsp;</div>
-    </div>
-
     <div ng-view></div>
-
 </div>
 
 <footer class="text-center navbar-fixed-bottom">
@@ -100,4 +71,5 @@
 </footer>
 
 </body>
+
 </html>
