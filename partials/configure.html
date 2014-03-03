@@ -14,23 +14,22 @@
         <div class="col-md-4">
 
             <div class="form-group">
-                <label for="inputFeedUrl"
-                       class="control-label"
-                        >Add feed</label>
-                <input id="inputFeedUrl"
-                       class="form-control"
-                       type="url"
-                       placeholder="Feed URL">
+                <label class="control-label">Add feed
+                    <input class="form-control"
+                           ng-model="url"
+                           type="url"
+                           placeholder="Feed URL">
+                </label>
             </div>
 
             <div class="form-group">
-                <label for="inputFeedToRemove"
-                       class="control-label"
-                        >Remove feed</label>
-                <select id="inputFeedToRemove"
-                        class="form-control">
-                    <option>Select feed</option>
-                </select>
+                <label class="control-label">Remove feed
+                    <select class="form-control"
+                            ng-model="feed"
+                            ng-options="feed.title for feed in feeds">
+                        <option value="">Select feed</option>
+                    </select>
+                </label>
             </div>
 
         </div>
@@ -39,27 +38,22 @@
         <div class="col-md-4">
 
             <div class="form-group">
-                <label for="inputFeedsFile"
-                       class="control-label"
-                        >Upload feeds file (*.json)</label>
-                <input id="inputFeedsFile"
-                       type="file"
-                       accept="application/json">
+                <label class="control-label">Upload feeds file (*.json)
+                    <input ng-model="file" type="file" accept="application/json">
+                </label>
             </div>
 
             <p>
-                <label for="downloadFeeds">Download</label>
-                <a id="downloadFeeds"
-                   href="data:text;charset=utf-8,[]"
-                   download="feeds.json"
-                        >your feeds file</a>
+                <label>Download
+                    <a href="data:text;charset=utf-8,[]" download="feeds.json"
+                    >your feeds file</a>
+                </label>
             </p>
 
             <p>
-                <label for="downloadExampleFeeds">Example</label>
-                <a id="downloadExampleFeeds"
-                   href="feeds.json"
-                        >feeds file</a>
+                <label>Example
+                    <a href="examples/feeds.json">feeds file</a>
+                </label>
             </p>
 
         </div>
@@ -69,15 +63,12 @@
 
             <div class="form-group">
                 <label class="control-label">
-                <input id="doStoreBookmarks"
-                       type="checkbox"> Store bookmarks</label>
+                <input ng-model="store" type="checkbox"> Store in Dropbox</label>
             </div>
 
             <div class="form-group">
-                    <input id="reload"
-                           class="btn btn-default"
-                           type="button"
-                           value="Reload feeds">
+                <button class="btn btn-default" ng-model="reload"
+                >Reload feeds</button>
             </div>
         </div>
 
