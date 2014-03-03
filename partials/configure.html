@@ -10,8 +10,33 @@
 
     <div class="row">
 
+        <!-- Add and remove feeds -->
+        <div class="col-md-4">
+
+            <div class="form-group">
+                <label for="inputFeedUrl"
+                       class="control-label"
+                        >Add feed</label>
+                <input id="inputFeedUrl"
+                       class="form-control"
+                       type="url"
+                       placeholder="Feed URL">
+            </div>
+
+            <div class="form-group">
+                <label for="inputFeedToRemove"
+                       class="control-label"
+                        >Remove feed</label>
+                <select id="inputFeedToRemove"
+                        class="form-control">
+                    <option>Select feed</option>
+                </select>
+            </div>
+
+        </div>
+
         <!-- Feeds files -->
-        <div class="col-md-4 center-block">
+        <div class="col-md-4">
 
             <div class="form-group">
                 <label for="inputFeedsFile"
@@ -39,33 +64,8 @@
 
         </div>
 
-        <!-- Add and remove feeds -->
-        <div class="col-md-4 center-block">
-
-            <div class="form-group">
-                <label for="inputFeedUrl"
-                       class="control-label"
-                        >Add feed</label>
-                <input id="inputFeedUrl"
-                       class="form-control"
-                       type="url"
-                       placeholder="Feed URL">
-            </div>
-
-            <div class="form-group">
-                <label for="inputFeedToRemove"
-                       class="control-label"
-                        >Remove feed</label>
-                <select id="inputFeedToRemove"
-                        class="form-control">
-                    <option>Select feed</option>
-                </select>
-            </div>
-
-        </div>
-
         <!-- Store and reload -->
-        <div class="col-md-4 center-block">
+        <div class="col-md-4">
 
             <div class="form-group">
                 <label class="control-label">
