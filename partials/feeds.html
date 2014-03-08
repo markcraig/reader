@@ -9,9 +9,19 @@
 <div class="row">
     <div class="col-md-2">&nbsp;</div>
     <div class="col-md-8">
-        <hr />
-        <p class="text-center text-muted">{{message}}</p>
-        <hr />
+
+        <div ng-repeat="feed in feeds">
+            <a href="{{feed.link}}" target="_blank"><h2>{{feed.title}}</h2></a>
+
+            <div ng-repeat="entry in feed.entries">
+                <div class="title"><a href="{{entry.link}}" target="_blank">{{entry.title}}</a></div>
+                    <div class="content" ng-bind-html="trust(entry.content)"></div>
+            </div>
+
+            <hr />
+
+        </div>
+
         <button type="button" class="btn btn-default pull-right">Reload</button>
     </div>
     <div class="col-md-2">&nbsp;</div>
