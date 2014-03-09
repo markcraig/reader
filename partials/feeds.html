@@ -7,11 +7,25 @@
 -->
 
 <div class="row">
-    <div class="col-md-2">&nbsp;</div>
-    <div class="col-md-8">
+    <div class="col-md-3">
 
         <div ng-repeat="feed in feeds">
-            <a href="{{feed.link}}" target="_blank"><h2>{{feed.title}}</h2></a>
+            <a ng-click="goTo(feed.title)">{{feed.title}}</a><!--TODO: goTo() doesn't work -->
+            <ul class="list-unstyled"
+                ng-repeat="entry in feed.entries">
+                <li style="width: 80%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"
+                        ><small>{{entry.title}}</small></li>
+            </ul>
+        </div>
+
+    </div>
+
+    <div class="col-md-9">
+
+        <div ng-repeat="feed in feeds">
+            <a href="{{feed.link}}" target="_blank">
+                <h2 id="{{feed.title}}">{{feed.title}}</h2>
+            </a>
 
             <div ng-repeat="entry in feed.entries">
                 <div class="title"><a href="{{entry.link}}" target="_blank">{{entry.title}}</a></div>
@@ -24,5 +38,9 @@
 
         <button type="button" class="btn btn-default pull-right">Reload</button>
     </div>
-    <div class="col-md-2">&nbsp;</div>
+
+</div>
+
+<div class="row" ng-show="nothingToRead">
+    <div class="col-md-12 text-muted">Nothing new to read</div>
 </div>

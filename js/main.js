@@ -58,10 +58,14 @@ angular.module('main', ['ngResource', 'ngRoute', 'ngSanitize', 'ui.bootstrap'])
             for (i = 0; i < feedList.length; i += 1) {
                 FeedLoader.fetch({q: feedList[i].url}, {}, function (data) {
                     var feed = data.responseData.feed;
-                    console.log(angular.toJson(feed));
                     feeds.push(feed);
                 });
             }
+            feeds = feeds.sort(function (a, b) {
+                var compare = a.title.toString().toLowerCase().
+                    localeCompare(b.title.toLowerCase().toString());
+                return compare;
+            });
             return feeds;
         }
     })
@@ -69,7 +73,9 @@ angular.module('main', ['ngResource', 'ngRoute', 'ngSanitize', 'ui.bootstrap'])
         $routeProvider
             .when('/', {
                 templateUrl: 'partials/feeds.html',
-                controller: function($scope, $sce, FeedList) {
+                controller: function($scope, $sce, $location, $anchorScroll, FeedList) {
+                    $scope.nothingToRead = false;
+
                     $scope.feeds = FeedList.get();
                     $scope.$on('FeedList', function (event, data) {
                         $scope.feeds = data;
@@ -77,6 +83,15 @@ angular.module('main', ['ngResource', 'ngRoute', 'ngSanitize', 'ui.bootstrap'])
                     $scope.trust = function (html) {
                         return $sce.trustAsHtml(html);
                     }
+
+                    if ($scope.feeds === []) {
+                        $scope.nothingToRead = true;
+                    }
+
+                    $scope.goTo = function (target) {
+                        $location.hash(target);
+                        $anchorScroll();
+                    };
                 }
             })
             .when('/configure', {
