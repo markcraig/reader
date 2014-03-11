@@ -6,41 +6,39 @@
  ! Copyright 2014 Mark Craig
 -->
 
-<div class="row">
-    <div class="col-md-3">
+<div class="container">
 
-        <div ng-repeat="feed in feeds">
-            <a ng-click="goTo(feed.title)">{{feed.title}}</a><!--TODO: goTo() doesn't work -->
-            <ul class="list-unstyled"
-                ng-repeat="entry in feed.entries">
-                <li style="width: 80%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"
-                        ><small>{{entry.title}}</small></li>
-            </ul>
-        </div>
+    <div class="row" ng-show="!nothingToRead">
+
+        <tabset>
+
+            <tab ng-repeat="feed in feeds" heading="{{feed.title}}">
+
+                <div class="center-block" ng-repeat="entry in feed.entries"
+                     style="max-width: 500px;">
+
+                    <h4>
+                        <a href="{{entry.link}}"
+                           target="_blank">{{entry.title}}</a>
+                    </h4>
+
+                    <div class="content"
+                         ng-bind-html="trust(entry.content)"></div>
+
+                    <hr/>
+
+                </div>
+
+            </tab>
+
+        </tabset>
 
     </div>
 
-    <div class="col-md-9">
+    <div class="row" ng-show="nothingToRead">
 
-        <div ng-repeat="feed in feeds">
-            <a href="{{feed.link}}" target="_blank">
-                <h2 id="{{feed.title}}">{{feed.title}}</h2>
-            </a>
+        <div class="col-md-12 text-muted text-center">Nothing new to read</div>
 
-            <div ng-repeat="entry in feed.entries">
-                <div class="title"><a href="{{entry.link}}" target="_blank">{{entry.title}}</a></div>
-                    <div class="content" ng-bind-html="trust(entry.content)"></div>
-            </div>
-
-            <hr />
-
-        </div>
-
-        <button type="button" class="btn btn-default pull-right">Reload</button>
     </div>
 
-</div>
-
-<div class="row" ng-show="nothingToRead">
-    <div class="col-md-12 text-muted">Nothing new to read</div>
 </div>
