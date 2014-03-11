@@ -6,68 +6,68 @@
  ! Copyright 2014 Mark Craig
 -->
 
-<div class="row">
+<div class="container">
 
-    <!-- Add and remove feeds -->
-    <div class="col-md-4">
+    <div class="row">
 
-        <div class="form-group">
-            <label class="control-label">Add feed
-                <input class="form-control"
-                       ng-model="url"
-                       type="url"
-                       placeholder="Feed URL">
-            </label>
+        <div class="col-md-4">&nbsp;</div>
+
+        <div class="col-md-4">
+
+            <div class="form-group">
+                <label class="control-label">Add feed
+                    <input class="form-control"
+                           ng-model="url"
+                           type="url"
+                           placeholder="Feed URL">
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Remove feed
+                    <select class="form-control"
+                            ng-model="feed"
+                            ng-options="feed.title for feed in feeds">
+                        <option value="">Select feed</option>
+                    </select>
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Upload feeds file (*.json)
+                    <input ng-model="file" type="file"
+                           accept="application/json">
+                </label>
+            </div>
+
+            <p>
+                <label>Download
+                    <a href="data:text;charset=utf-8,[]" download="feeds.json"
+                            >your feeds file</a>
+                </label>
+            </p>
+
+            <p>
+                <label>Example
+                    <a href="examples/feeds.json">feeds file</a>
+                </label>
+            </p>
+
+            <div class="form-group">
+                <label class="control-label">
+                    <input ng-model="useDropbox" type="checkbox"> Store in
+                    Dropbox</label>
+            </div>
+
+            <div class="form-group">
+                <button class="btn btn-default" ng-model="reload"
+                        >Reload feeds
+                </button>
+            </div>
         </div>
 
-        <div class="form-group">
-            <label class="control-label">Remove feed
-                <select class="form-control"
-                        ng-model="feed"
-                        ng-options="feed.title for feed in feeds">
-                    <option value="">Select feed</option>
-                </select>
-            </label>
-        </div>
+        <div class="col-md-4">&nbsp;</div>
 
-    </div>
-
-    <!-- Feeds files -->
-    <div class="col-md-4">
-
-        <div class="form-group">
-            <label class="control-label">Upload feeds file (*.json)
-                <input ng-model="file" type="file" accept="application/json">
-            </label>
-        </div>
-
-        <p>
-            <label>Download
-                <a href="data:text;charset=utf-8,[]" download="feeds.json"
-                >your feeds file</a>
-            </label>
-        </p>
-
-        <p>
-            <label>Example
-                <a href="examples/feeds.json">feeds file</a>
-            </label>
-        </p>
-
-    </div>
-
-    <!-- Store and reload -->
-    <div class="col-md-4">
-
-        <div class="form-group">
-            <label class="control-label">
-            <input ng-model="useDropbox" type="checkbox"> Store in Dropbox</label>
-        </div>
-
-        <div class="form-group">
-            <button class="btn btn-default" ng-model="reload"
-            >Reload feeds</button>
-        </div>
     </div>
 
 </div>

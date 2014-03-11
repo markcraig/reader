@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <!--
 ! This Source Code Form is subject to the terms of the Mozilla Public
 ! License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -10,66 +10,46 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Feed Reader</title>
+    <title>Reader</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="js/angular.min.js"></script>
-    <script src="js/angular-resource.min.js"></script>
-    <script src="js/angular-route.min.js"></script>
-    <script src="js/angular-sanitize.min.js"></script>
-    <script src="js/ui-bootstrap-0.10.0.min.js"></script>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript" src="js/angular-resource.min.js"></script>
+    <script type="text/javascript" src="js/angular-route.min.js"></script>
+    <script type="text/javascript" src="js/angular-sanitize.min.js"></script>
+    <script type="text/javascript" src="js/ui-bootstrap-tpls-0.10.0.min.js"></script>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript" src="js/main.js"></script>
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
-        .nav, .pagination, .carousel a { cursor: pointer; }
+        .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
     </style>
 </head>
 
 <body>
 
-<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+<nav class="navbar navbar-default" role="navigation">
     <div class="container">
         <ul class="nav navbar-nav">
-            <li><a href="#">Read feeds</a></li>
-            <li><a href="#/configure">Configure feeds</a></li>
+            <li><a href="#"><span class="glyphicon glyphicon-home"></span> Read</a>
+            </li>
+            <li><a href="#/configure"><span
+                    class="glyphicon glyphicon-cog"></span> Configure</a></li>
+            <li><a href="#/about"><span
+                    class="glyphicon glyphicon-info-sign"></span> About</a></li>
         </ul>
     </div>
 </nav>
 
-<div class="jumbotron">
-    <div class="container">
-        <h1>Reader</h1>
+<div ng-view></div>
 
-        <p>
-            This page uses the
-            <a href="https://developers.google.com/feed/v1/"
-               target="_blank">Google Feed API</a>.
-            It sets a cookie to avoid displaying items
-            that you have already seen.
-            But you can click the Reload button
-            to delete the cookie and reload all feeds.
+<div class="container navbar-fixed-bottom">
+    <footer class="text-center">
+        <p class="text-muted">
+            Copyright 2013-2014 Mark Craig,
+            License <a href="http://mozilla.org/MPL/2.0/">MPL 2.0</a>
         </p>
-
-        <p>
-            This page stores the list of your feeds
-            in your browser's local storage,
-            so before you change browsers, download your list of feeds.
-            You can then upload the list in the other browser.
-        </p>
-
-    </div>
+    </footer>
 </div>
-
-<div class="container">
-    <div ng-view></div>
-</div>
-
-<footer class="text-center navbar-fixed-bottom">
-    <p class="text-muted">
-        Copyright 2013-2014 Mark Craig,
-        License <a href="http://mozilla.org/MPL/2.0/">MPL 2.0</a>
-    </p>
-</footer>
 
 </body>
 
