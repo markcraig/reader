@@ -1,5 +1,41 @@
 [
     {
+        "url": "http://great-hikes.com/blog/feed/",
+        "title": "A Kauai Blog"
+    },
+    {
+        "url": "http://blog.arnaudlacour.com/feeds/posts/default",
+        "title": "A Sense Of Identity"
+    },
+    {
+        "url": "http://andrewgavinmarshall.com/feed/",
+        "title": "Andrew Gavin Marshall"
+    },
+    {
+        "url": "http://ashedryden.com/blog/feed",
+        "title": "Blogs|ashedryden"
+    },
+    {
+        "url": "http://chomskydotinfo.blogspot.com/rss.xml",
+        "title": "chomsky.info"
+    },
+    {
+        "url": "http://www.dirmgr.com/blog/rss.xml",
+        "title": "cn=Directory Manager Blog"
+    },
+    {
+        "url": "http://earthly-powers.blogspot.com/rss.xml",
+        "title": "Earthly Powers"
+    },
+    {
+        "url": "http://www.laquadrature.net/en/rss.xml",
+        "title": "La Quadrature du Net"
+    },
+    {
+        "url": "http://feeds.feedburner.com/JohnResig",
+        "title": "John Resig"
+    },
+    {
         "url": "http://www.jwz.org/blog/feed/",
         "title": "jwz"
     },
@@ -18,5 +54,25 @@
     {
         "url": "http://www.schneier.com/blog/atom.xml",
         "title": "Schneier on Security"
+    },
+    {
+        "url": "http://thearchdruidreport.blogspot.com/feeds/posts/default",
+        "title": "The Archdruid Report"
+    },
+    {
+        "url": "http://kunstler.com/feed/",
+        "title": "James Howard Kunstler"
+    },
+    {
+        "url": "https://blog.jcoglan.com/feed/",
+        "title": "The If Works"
+    },
+    {
+        "url": "http://www.tri4joe.com/feed/",
+        "title": "Tri4Joe"
+    },
+    {
+        "url": "http://webmink.com/feed/",
+        "title": "Wild Webmink"
     }
 ]
