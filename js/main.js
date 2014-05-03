@@ -24,7 +24,7 @@ angular
             }
         });
     })
-    .service('FeedList', function ($resource, $log, FeedLoader) {
+    .service('FeedList', function ($resource, FeedLoader) {
         "use strict";
         this.get = function (lastVisit) {
             var feeds, feedList, FeedList;
@@ -36,15 +36,23 @@ angular
                 feedList = result || [];
 
                 handleList = function (data) {
-                    var feed, j;
+                    var feed, j, recent;
                     feed = data.responseData.feed;
+                    recent = {
+                        feedUrl: feed.feedUrl,
+                        title: feed.title,
+                        link: feed.link,
+                        description: feed.description,
+                        author: feed.author,
+                        entries: []
+                    };
 
                     for (j = 0; j < feed.entries.length; j += 1) {
                         if (lastVisit < new Date(feed.entries[j].publishedDate)) {
-                            $log.info(feed.entries[j].publishedDate);
+                            recent.entries.push(feed.entries[j]);
                         }
                     }
-                    feeds.push(feed);
+                    feeds.push(recent);
                 };
 
                 for (i = 0; i < feedList.length; i += 1) {
@@ -79,7 +87,7 @@ angular
 
                     $scope.feeds = FeedList.get(lastVisit);
                     $scope.$on('FeedList', function (event, data) {
-                        $log.info(angular.toJson(event, true));
+                        $log.info("event type: " + typeof event);
 
                         $scope.feeds = data;
                         if ($scope.feeds.length === 0) {
