@@ -4,16 +4,12 @@
         "title": "A Kauai Blog"
     },
     {
-        "url": "http://blog.arnaudlacour.com/feeds/posts/default",
-        "title": "A Sense Of Identity"
-    },
-    {
         "url": "http://andrewgavinmarshall.com/feed/",
         "title": "Andrew Gavin Marshall"
     },
     {
         "url": "http://ashedryden.com/blog/feed",
-        "title": "Blogs|ashedryden"
+        "title": "ashe dryden blogs"
     },
     {
         "url": "http://chomskydotinfo.blogspot.com/rss.xml",
@@ -28,8 +24,8 @@
         "title": "Earthly Powers"
     },
     {
-        "url": "http://www.laquadrature.net/en/rss.xml",
-        "title": "La Quadrature du Net"
+        "url": "http://kunstler.com/feed/",
+        "title": "James Howard Kunstler"
     },
     {
         "url": "http://feeds.feedburner.com/JohnResig",
@@ -38,6 +34,10 @@
     {
         "url": "http://www.jwz.org/blog/feed/",
         "title": "jwz"
+    },
+    {
+        "url": "http://www.laquadrature.net/en/rss.xml",
+        "title": "La Quadrature du Net"
     },
     {
         "url": "http://ludopoitou.wordpress.com/feed/",
@@ -52,16 +52,16 @@
         "title": "ongoing by Tim Bray"
     },
     {
+        "url": "http://blog.arnaudlacour.com/feeds/posts/default",
+        "title": "Privacytizen"
+    },
+    {
         "url": "http://www.schneier.com/blog/atom.xml",
         "title": "Schneier on Security"
     },
     {
         "url": "http://thearchdruidreport.blogspot.com/feeds/posts/default",
         "title": "The Archdruid Report"
-    },
-    {
-        "url": "http://kunstler.com/feed/",
-        "title": "James Howard Kunstler"
     },
     {
         "url": "https://blog.jcoglan.com/feed/",
