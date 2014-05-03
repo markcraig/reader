@@ -6,70 +6,121 @@
  * Copyright 2014 Mark Craig
  */
 
-angular.module('main', ['ngResource', 'ngRoute', 'ngSanitize', 'ui.bootstrap'])
-        .factory('FeedLoader', function($resource) {
-            return $resource('http://ajax.googleapis.com/ajax/services/feed/load', {}, {
-                fetch: {
-                    method: 'JSONP',
-                    params: {
-                        v: '1.0',
-                        callback: 'JSON_CALLBACK'
+/*global
+    angular, Date
+*/
+
+angular
+    .module('main', ['ngCookies', 'ngResource', 'ngRoute', 'ngSanitize', 'ui.bootstrap'])
+    .factory('FeedLoader', function ($resource) {
+        "use strict";
+        return $resource('http://ajax.googleapis.com/ajax/services/feed/load', {}, {
+            fetch: {
+                method: 'JSONP',
+                params: {
+                    v: '1.0',
+                    callback: 'JSON_CALLBACK'
+                }
+            }
+        });
+    })
+    .service('FeedList', function ($resource, $log, FeedLoader) {
+        "use strict";
+        this.get = function (lastVisit) {
+            var feeds, feedList, FeedList;
+
+            feeds = [];
+            FeedList = $resource('examples/feeds.json');
+            feedList = FeedList.query({}, function (result) {
+                var i, handleList;
+                feedList = result || [];
+
+                handleList = function (data) {
+                    var feed, j;
+                    feed = data.responseData.feed;
+
+                    for (j = 0; j < feed.entries.length; j += 1) {
+                        if (lastVisit < new Date(feed.entries[j].publishedDate)) {
+                            $log.info(feed.entries[j].publishedDate);
+                        }
                     }
+                    feeds.push(feed);
+                };
+
+                for (i = 0; i < feedList.length; i += 1) {
+                    FeedLoader.fetch({q: feedList[i].url, num: 5}, {}, handleList);
                 }
             });
-        })
-        .service('FeedList', function($rootScope, $resource, FeedLoader) {
-            this.get = function() {
-                var feeds, FeedList, feedList, i;
 
-                feeds = [];
-                FeedList = $resource('examples/feeds.json');
-                feedList = FeedList.query({}, function(result) {
-                    feedList = result || [];
+            return feeds;
+        };
+    })
+    .config(function ($routeProvider) {
+        "use strict";
+        $routeProvider
+            .when('/', {
+                templateUrl: 'partials/feeds.html',
+                controller: function ($scope, $cookieStore, $log, $sce, FeedList) {
+                    var lastVisit, date;
 
-                    for (i = 0; i < feedList.length; i += 1) {
-                        FeedLoader.fetch({q: feedList[i].url, num: 5}, {}, function(data) {
-                            var feed = data.responseData.feed;
-                            feeds.push(feed);
-                        });
+                    $scope.nothingToRead = false;
+
+                    // Consider that the date of the last visit
+                    // was the beginning of the epoch,
+                    // unless the date of the last visit
+                    // can be read from a cookie, 
+                    // where the cookie format is:
+                    // <date>;Expires=<date>
+                    lastVisit = new Date(0);
+                    date = $cookieStore.get('lastVisit') || "";
+                    if (date !== "") {
+                        lastVisit = new Date(date.split(";")[0]); // ;Expires=...
                     }
-                    feeds = feeds.sort(function(a, b) {
-                        var compare = a.title.toString().toLowerCase().
-                                localeCompare(b.title.toLowerCase().toString());
-                        return compare;
-                    });
-                });
 
-                return feeds;
-            };
-        })
-        .config(function($routeProvider) {
-            $routeProvider
-                    .when('/', {
-                        templateUrl: 'partials/feeds.html',
-                        controller: function($scope, $sce, FeedList) {
-                            $scope.nothingToRead = false;
+                    $scope.feeds = FeedList.get(lastVisit);
+                    $scope.$on('FeedList', function (event, data) {
+                        $log.info(angular.toJson(event, true));
 
-                            $scope.feeds = FeedList.get();
-                            $scope.$on('FeedList', function(event, data) {
-                                $scope.feeds = data;
-                                if ($scope.feeds === []) {
-                                    $scope.nothingToRead = true;
-                                }
+                        $scope.feeds = data;
+                        if ($scope.feeds.length === 0) {
+                            $scope.nothingToRead = true;
+                        } else {
+                            $scope.feeds.sort(function (a, b) {
+                                var compare;
+                                compare = a.title.toString().toLowerCase().
+                                        localeCompare(b.title.toLowerCase().toString());
+                                return compare;
                             });
+                        }
 
-                            $scope.trust = function(html) {
-                                return $sce.trustAsHtml(html);
-                            };
-                        }
-                    })
-                    .when('/about', {
-                        templateUrl: 'partials/about.html'
-                    })
-                    .when('/configure', {
-                        templateUrl: 'partials/configure.html',
-                        controller: function($scope) {
-                            // Nothing yet
-                        }
+                        // Store the date of this visit in a cookie
+                        // that expires a week from now.
+                        $cookieStore.put('lastVisit', function () {
+                            var now, expireTime, cookieValue;
+
+                            now = new Date();
+                            expireTime = new Date();
+                            expireTime.setTime(now.getTime() + 1000 * 3600 * 24 * 7);
+
+                            // <now>;Expires=<expireTime>
+                            cookieValue = now.toGMTString() +
+                                    ";Expires=" + expireTime.toGMTString();
+                            return cookieValue;
+                        });
                     });
-        });
+
+                    $scope.trust = function (html) {
+                        return $sce.trustAsHtml(html);
+                    };
+                }
+            })
+            .when('/about', {
+                templateUrl: 'partials/about.html'
+            })
+            .when('/configure', {
+                templateUrl: 'partials/configure.html',
+                controller: function ($scope) {
+                    $scope.message = "Not implemented yet";
+                }
+            });
+    });
