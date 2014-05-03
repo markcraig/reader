@@ -28,7 +28,7 @@ angular.module('main', ['ngResource', 'ngRoute', 'ngSanitize', 'ui.bootstrap'])
                     feedList = result || [];
 
                     for (i = 0; i < feedList.length; i += 1) {
-                        FeedLoader.fetch({q: feedList[i].url}, {}, function(data) {
+                        FeedLoader.fetch({q: feedList[i].url, num: 5}, {}, function(data) {
                             var feed = data.responseData.feed;
                             feeds.push(feed);
                         });
