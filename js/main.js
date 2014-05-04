@@ -7,7 +7,7 @@
  */
 
 /*global
-    angular, Date
+    angular, Date, document
 */
 
 angular
@@ -52,7 +52,10 @@ angular
                             recent.entries.push(feed.entries[j]);
                         }
                     }
-                    feeds.push(recent);
+                    
+                    if (recent.entries.length > 0) {
+                        feeds.push(recent);
+                    }
                 };
 
                 for (i = 0; i < feedList.length; i += 1) {
@@ -68,8 +71,8 @@ angular
         $routeProvider
             .when('/', {
                 templateUrl: 'partials/feeds.html',
-                controller: function ($scope, $cookieStore, $log, $sce, FeedList) {
-                    var lastVisit, date;
+                controller: function ($scope, $log, $sce, FeedList) {
+                    var cookie, lastVisit, now, maxAge, expireTime;
 
                     $scope.nothingToRead = false;
 
@@ -79,15 +82,13 @@ angular
                     // can be read from a cookie, 
                     // where the cookie format is:
                     // <date>;Expires=<date>
-                    lastVisit = new Date(0);
-                    date = $cookieStore.get('lastVisit') || "";
-                    if (date !== "") {
-                        lastVisit = new Date(date.split(";")[0]); // ;Expires=...
-                    }
+                    cookie = document.cookie.replace(/(?:(?:^|.*;\s*)myLastVisit\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+                    (cookie) ? lastVisit = new Date(cookie) : lastVisit = new Date(0);
+                    $log.log("lastVisit: " +  lastVisit.toGMTString());
 
                     $scope.feeds = FeedList.get(lastVisit);
                     $scope.$on('FeedList', function (event, data) {
-                        $log.info("event type: " + typeof event);
+                        $log.log("event type: " + typeof event);
 
                         if (data.length === 0) {
                             $scope.nothingToRead = true;
@@ -100,26 +101,23 @@ angular
                                 return compare;
                             });
                         }
-
-                        // Store the date of this visit in a cookie
-                        // that expires a week from now.
-                        $cookieStore.put('lastVisit', function () {
-                            var now, expireTime, cookieValue;
-
-                            now = new Date();
-                            expireTime = new Date();
-                            expireTime.setTime(now.getTime() + 1000 * 3600 * 24 * 7);
-
-                            // <now>;Expires=<expireTime>
-                            cookieValue = now.toGMTString() +
-                                    ";Expires=" + expireTime.toGMTString();
-                            return cookieValue;
-                        });
                     });
 
                     $scope.trust = function (html) {
                         return $sce.trustAsHtml(html);
                     };
+
+                    // Store the date of this visit in a cookie
+                    // that expires a week from now.
+                    now = new Date();
+                    maxAge = 3600 * 24 * 7;
+                    expireTime = new Date();
+                    expireTime.setTime(now.getTime() + maxAge);
+
+                    // myLastVisit=<now>;expires=<expireTime>;max-Age=<maxAge>
+                    document.cookie = "myLastVisit=" + now.toGMTString() + ";" +
+                        "max-age=" + maxAge + ";" +
+                        "expires=" + expireTime.toGMTString() * 1000 + ";";
                 }
             })
             .when('/about', {
