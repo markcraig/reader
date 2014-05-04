@@ -14,7 +14,7 @@ angular
     .module('main', ['ngCookies', 'ngResource', 'ngRoute', 'ngSanitize', 'ui.bootstrap'])
     .factory('FeedLoader', function ($resource) {
         "use strict";
-        return $resource('http://ajax.googleapis.com/ajax/services/feed/load', {}, {
+        return $resource('//ajax.googleapis.com/ajax/services/feed/load', {}, {
             fetch: {
                 method: 'JSONP',
                 params: {
