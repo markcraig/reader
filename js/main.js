@@ -11,7 +11,7 @@
 */
 
 angular
-    .module('main', ['ngCookies', 'ngResource', 'ngRoute', 'ngSanitize', 'ui.bootstrap'])
+    .module('main', ['ngResource', 'ngRoute', 'ngSanitize', 'ui.bootstrap'])
     .factory('FeedLoader', function ($resource) {
         "use strict";
         return $resource('//ajax.googleapis.com/ajax/services/feed/load', {}, {
