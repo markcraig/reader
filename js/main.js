@@ -89,11 +89,11 @@ angular
                     $scope.$on('FeedList', function (event, data) {
                         $log.info("event type: " + typeof event);
 
-                        $scope.feeds = data;
-                        if ($scope.feeds.length === 0) {
+                        if (data.length === 0) {
                             $scope.nothingToRead = true;
+                            $scope.feeds = [];
                         } else {
-                            $scope.feeds.sort(function (a, b) {
+                            $scope.feeds = data.sort(function (a, b) {
                                 var compare;
                                 compare = a.title.toString().toLowerCase().
                                         localeCompare(b.title.toLowerCase().toString());
