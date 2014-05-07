@@ -74,7 +74,7 @@ angular
                 controller: function ($scope, $log, $sce, FeedList) {
                     var cookie, lastVisit, now, maxAge, expireTime;
 
-                    $scope.nothingToRead = false;
+                    $scope.nothingToRead = true;
 
                     // Consider that the date of the last visit
                     // was the beginning of the epoch,
@@ -91,9 +91,9 @@ angular
                         $log.log("event type: " + typeof event);
 
                         if (data.length === 0) {
-                            $scope.nothingToRead = true;
                             $scope.feeds = [];
                         } else {
+                            $scope.nothingToRead = false;
                             $scope.feeds = data.sort(function (a, b) {
                                 var compare;
                                 compare = a.title.toString().toLowerCase().
