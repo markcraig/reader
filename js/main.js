@@ -71,17 +71,17 @@ angular
         $routeProvider
             .when('/', {
                 templateUrl: 'partials/feeds.html',
-                controller: function ($scope, $log, $sce, FeedList) {
+                controller: function ($scope, $log, $route, $sce, FeedList) {
                     var cookie, lastVisit, now, maxAge, expireTime;
 
-                    $scope.nothingToRead = true;
+                    $scope.nothingToRead = false;
 
                     // Consider that the date of the last visit
                     // was the beginning of the epoch,
                     // unless the date of the last visit
                     // can be read from a cookie, 
                     // where the cookie format is:
-                    // <date>;Expires=<date>
+                    // myLastVisit=<now>;max-age=<maxAge>;expires=<expireTime>;
                     cookie = document.cookie.replace(/(?:(?:^|.*;\s*)myLastVisit\s*\=\s*([^;]*).*$)|^.*$/, "$1");
                     (cookie) ? lastVisit = new Date(cookie) : lastVisit = new Date(0);
                     $log.log("lastVisit: " +  lastVisit.toGMTString());
@@ -89,17 +89,16 @@ angular
                     $scope.feeds = FeedList.get(lastVisit);
                     $scope.$on('FeedList', function (event, data) {
                         $log.log("event type: " + typeof event);
-
-                        if (data.length === 0) {
-                            $scope.feeds = [];
-                        } else {
-                            $scope.nothingToRead = false;
-                            $scope.feeds = data.sort(function (a, b) {
-                                var compare;
-                                compare = a.title.toString().toLowerCase().
-                                        localeCompare(b.title.toLowerCase().toString());
-                                return compare;
-                            });
+ 
+                        $scope.feeds = data.sort(function (a, b) {
+                            var compare;
+                            compare = a.title.toString().toLowerCase().
+                                    localeCompare(b.title.toLowerCase().toString());
+                            return compare;
+                        });
+                        
+                        if ($scope.feeds === []) {
+                            $scope.nothingToRead = true;
                         }
                     });
 
@@ -114,10 +113,16 @@ angular
                     expireTime = new Date();
                     expireTime.setTime(now.getTime() + maxAge);
 
-                    // myLastVisit=<now>;expires=<expireTime>;max-Age=<maxAge>
+                    // myLastVisit=<now>;max-age=<maxAge>;expires=<expireTime>;
                     document.cookie = "myLastVisit=" + now.toGMTString() + ";" +
                         "max-age=" + maxAge + ";" +
                         "expires=" + expireTime.toGMTString() * 1000 + ";";
+                
+                    $scope.deleteCookie = function () {
+                        document.cookie = "myLastVisit=;" +
+                        "expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+                        $route.reload();
+                    };
                 }
             })
             .when('/about', {
