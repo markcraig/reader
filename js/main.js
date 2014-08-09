@@ -113,7 +113,7 @@ angular
                     expireTime = new Date();
                     expireTime.setTime(now.getTime() + (maxAge * 1000));
 
-                    // myLastVisit=<now>;max-age=<maxAge>;expires=<expireTime>;
+                    // myLastVisit=<now>;expires=<expireTime>;path=/
                     document.cookie = "myLastVisit=" + now.toGMTString() + ";"
                         + "expires=" + expireTime.toGMTString() + "; path=/";
                 
