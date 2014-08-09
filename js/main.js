@@ -126,7 +126,7 @@ angular
             .when('/', {
                 templateUrl: 'partials/feeds.html',
                 controller: function ($scope, $log, $route, $sce, FeedList, Cookies) {
-                    var cookieName, cookie, lastVisit;
+                    var cookieName, cookie, lastVisit, thisVisit;
 
                     $scope.nothingToRead = false;
 
@@ -138,7 +138,7 @@ angular
 
                     lastVisit = new Date();
                     if (cookie) {
-                        lastVisit = new Date(cookie);
+                        lastVisit.setTime(cookie);
                     }
                     $log.log("lastVisit: " +  lastVisit.toGMTString());
 
@@ -164,7 +164,9 @@ angular
 
                     // Store the date of this visit in a last visit cookie
                     // that expires a week (7 days) from now.
-                    Cookies.createCookie(cookieName, lastVisit.toGMTString(), 7);
+                    thisVisit = new Date();
+                    Cookies.createCookie(cookieName, thisVisit.getTime(), 7);
+                    $log.log("Current " + cookieName + " value: " + Cookies.readCookie(cookieName));
 
                     // Remove the last visit cookie and reload.
                     $scope.reloadAll = function () {
