@@ -164,7 +164,7 @@ angular
 
                     // Store the date of this visit in a cookie
                     // that expires a week (7 days) from now.
-                    Cookies.createCookie(cookieName, lastVisit, 7);
+                    Cookies.createCookie(cookieName, lastVisit.toGMTString(), 7);
 
                     // Remove the last visit cookie and reload.
                     $scope.reloadAll = function () {
