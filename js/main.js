@@ -132,13 +132,16 @@ angular
 
                     // If a last visit cookie is already set,
                     // then get the time of the last visit.
-                    // Otherwise the time of the last visit is now.
+                    // Otherwise the time of the last visit
+                    // is the start of time.
                     cookieName = "myLastVisit";
                     cookie = Cookies.readCookie(cookieName);
 
                     lastVisit = new Date();
                     if (cookie) {
                         lastVisit.setTime(cookie);
+                    } else {
+                        lastVisit.setTime(0);
                     }
                     $log.log("lastVisit: " +  lastVisit.toGMTString());
 
