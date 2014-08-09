@@ -162,7 +162,7 @@ angular
                         return $sce.trustAsHtml(html);
                     };
 
-                    // Store the date of this visit in a cookie
+                    // Store the date of this visit in a last visit cookie
                     // that expires a week (7 days) from now.
                     Cookies.createCookie(cookieName, lastVisit.toGMTString(), 7);
 
