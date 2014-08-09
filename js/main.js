@@ -52,7 +52,7 @@ angular
                             recent.entries.push(feed.entries[j]);
                         }
                     }
-                    
+
                     if (recent.entries.length > 0) {
                         feeds.push(recent);
                     }
@@ -66,38 +66,94 @@ angular
             return feeds;
         };
     })
+    .service('Cookies', function () {
+        "use strict";
+
+        // Thanks to http://www.quirksmode.org/js/cookies.html
+
+        // Create a cookie set to expire in the specified number of days.
+        // name=value; expires=days in the future; path=/
+        this.createCookie = function (name, value, days) {
+            var date, expires;
+
+            if (days) {
+                date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = "; expires=" + date.toGMTString();
+            } else {
+                expires = "";
+            }
+            document.cookie = name + "=" + value + expires + "; path=/";
+        };
+
+        // Set the cookie by name to be expired already.
+        this.eraseCookie = function (name) {
+            this.createCookie(name, "", -1);
+        };
+
+        // Read the cookie value by name.
+        // Returns the cookie value, as in name=value, or null if not found.
+        this.readCookie = function (name) {
+            var nameEquals, cookieArray, i, cookie;
+
+            nameEquals = name + "=";
+
+            // Get all cookies.
+            cookieArray = document.cookie.split(';');
+
+            // For each individual cookie...
+            for (i = 0; i < cookieArray.length; i += 1) {
+                cookie = cookieArray[i];
+
+                // Remove leading spaces.
+                while (cookie.charAt(0) === ' ') {
+                    cookie = cookie.substring(1, cookie.length);
+                }
+
+                // Return the first cookie that matches by name.
+                if (cookie.indexOf(nameEquals) === 0) {
+                    return cookie.substring(nameEquals.length, cookie.length);
+                }
+            }
+
+            return null;
+        };
+    })
     .config(function ($routeProvider) {
         "use strict";
+
         $routeProvider
             .when('/', {
                 templateUrl: 'partials/feeds.html',
-                controller: function ($scope, $log, $route, $sce, FeedList) {
-                    var cookie, lastVisit, now, maxAge, expireTime;
+                controller: function ($scope, $log, $route, $sce, FeedList, Cookies) {
+                    var cookieName, cookie, lastVisit;
 
                     $scope.nothingToRead = false;
 
-                    // Consider that the date of the last visit
-                    // was the beginning of the epoch,
-                    // unless the date of the last visit
-                    // can be read from a cookie, 
-                    // where the cookie format is:
-                    // myLastVisit=<now>;max-age=<maxAge>;expires=<expireTime>;
-                    cookie = document.cookie.replace(/(?:(?:^|.*;\s*)myLastVisit\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-                    (cookie) ? lastVisit = new Date(cookie) : lastVisit = new Date(0);
+                    // If a last visit cookie is already set,
+                    // then get the time of the last visit.
+                    // Otherwise the time of the last visit is now.
+                    cookieName = "myLastVisit";
+                    cookie = Cookies.readCookie(cookieName);
+
+                    lastVisit = new Date(0);
+                    if (cookie) {
+                        lastVisit = new Date(cookie);
+                    }
                     $log.log("lastVisit: " +  lastVisit.toGMTString());
 
                     $scope.feeds = FeedList.get(lastVisit);
                     $scope.$on('FeedList', function (event, data) {
                         $log.log("event type: " + typeof event);
- 
+
                         $scope.feeds = data.sort(function (a, b) {
                             var compare;
                             compare = a.title.toString().toLowerCase().
                                     localeCompare(b.title.toLowerCase().toString());
                             return compare;
                         });
-                        
-                        if ($scope.feeds === []) {
+
+                        if ($scope.feeds.length === 0) {
                             $scope.nothingToRead = true;
                         }
                     });
@@ -107,19 +163,12 @@ angular
                     };
 
                     // Store the date of this visit in a cookie
-                    // that expires a week from now.
-                    now = new Date();
-                    maxAge = 7 * 24 * 60 * 60; // days * hrs * min * sec
-                    expireTime = new Date();
-                    expireTime.setTime(now.getTime() + (maxAge * 1000));
+                    // that expires a week (7 days) from now.
+                    Cookies.createCookie(cookieName, lastVisit, 7);
 
-                    // myLastVisit=<now>;expires=<expireTime>;path=/
-                    document.cookie = "myLastVisit=" + now.toGMTString() + ";"
-                        + "expires=" + expireTime.toGMTString() + "; path=/";
-                
-                    $scope.deleteCookie = function () {
-                        document.cookie = "myLastVisit=;" +
-                        "expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/";
+                    // Remove the last visit cookie and reload.
+                    $scope.reloadAll = function () {
+                        Cookies.eraseCookie(cookieName);
                         $route.reload();
                     };
                 }
