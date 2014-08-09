@@ -136,7 +136,7 @@ angular
                     cookieName = "myLastVisit";
                     cookie = Cookies.readCookie(cookieName);
 
-                    lastVisit = new Date(0);
+                    lastVisit = new Date();
                     if (cookie) {
                         lastVisit = new Date(cookie);
                     }
