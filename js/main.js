@@ -109,18 +109,17 @@ angular
                     // Store the date of this visit in a cookie
                     // that expires a week from now.
                     now = new Date();
-                    maxAge = 3600 * 24 * 7;
+                    maxAge = 7 * 24 * 60 * 60; // days * hrs * min * sec
                     expireTime = new Date();
-                    expireTime.setTime(now.getTime() + maxAge);
+                    expireTime.setTime(now.getTime() + (maxAge * 1000));
 
                     // myLastVisit=<now>;max-age=<maxAge>;expires=<expireTime>;
-                    document.cookie = "myLastVisit=" + now.toGMTString() + ";" +
-                        "max-age=" + maxAge + ";" +
-                        "expires=" + expireTime.toGMTString() * 1000 + ";";
+                    document.cookie = "myLastVisit=" + now.toGMTString() + ";"
+                        + "expires=" + expireTime.toGMTString() + "; path=/";
                 
                     $scope.deleteCookie = function () {
                         document.cookie = "myLastVisit=;" +
-                        "expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+                        "expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/";
                         $route.reload();
                     };
                 }
