@@ -12,7 +12,7 @@
         "title": "ashe dryden blogs"
     },
     {
-        "url": "https://cluborlov.blogspot.com",
+        "url": "https://cluborlov.blogspot.com/rss.xml",
         "title": "ClubOrlov"
     },
     {
@@ -98,6 +98,10 @@
     {
         "url": "http://www.tri4joe.com/feed/",
         "title": "Tri4Joe"
+    },
+    {
+        "url": "http://moslereconomics.com/feed/",
+        "title": "Mosler Economics"
     },
     {
         "url": "http://webmink.com/feed/",
