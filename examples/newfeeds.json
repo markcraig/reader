@@ -1,0 +1,106 @@
+[
+    {
+        "url": "http://great-hikes.com/blog/feed/",
+        "title": "A Kauai Blog"
+    },
+    {
+        "url": "http://andrewgavinmarshall.com/feed/",
+        "title": "Andrew Gavin Marshall"
+    },
+    {
+        "url": "http://ashedryden.com/blog/feed",
+        "title": "ashe dryden blogs"
+    },
+    {
+        "url": "http://chomskydotinfo.blogspot.com/rss.xml",
+        "title": "chomsky.info"
+    },
+    {
+        "url": "http://www.dirmgr.com/blog/rss.xml",
+        "title": "cn=Directory Manager Blog"
+    },
+    {
+        "url": "http://earthly-powers.blogspot.com/rss.xml",
+        "title": "Earthly Powers"
+    },
+    {
+        "url": "http://www.xmlgrrl.com/blog/feed/",
+        "title": "Eve Maler"
+    },
+    {
+        "url": "http://sauthieg.github.io/feed.xml",
+        "title": "Guillaume Sauthier"
+    },
+    {
+        "url": "http://kunstler.com/feed/",
+        "title": "James Howard Kunstler"
+    },
+    {
+        "url": "http://feeds.feedburner.com/JohnResig",
+        "title": "John Resig"
+    },
+    {
+        "url": "http://www.jwz.org/blog/feed/",
+        "title": "jwz"
+    },
+    {
+        "url": "http://blog.mondediplo.net/spip.php?page=backend&id_rubrique=6",
+        "title": "La Pompe à phynance"
+    },
+    {
+        "url": "http://www.laquadrature.net/en/rss.xml",
+        "title": "La Quadrature du Net"
+    },
+    {
+        "url": "http://ludopoitou.wordpress.com/feed/",
+        "title": "Ludo's Sketches"
+    },
+    {
+        "url": "http://www.fedji.com/blogs/",
+        "title": "Learning Curve"
+    },
+    {
+        "url": "http://marginnotes2.wordpress.com/feed/",
+        "title": "Margin Notes 2.0"
+    },
+    {
+        "url": "https://morecrows.wordpress.com/feed/",
+        "title": "More Crows than Eagles"
+    },
+    {
+        "url": "https://www.tbray.org/ongoing/ongoing.atom",
+        "title": "ongoing by Tim Bray"
+    },
+    {
+        "url": "http://blogs.forgerock.org/petermajor/feed/",
+        "title": "Peter Major"
+    },
+    {
+        "url": "http://blog.arnaudlacour.com/feeds/posts/default",
+        "title": "Privacytizen"
+    },
+    {
+        "url": "http://www.schneier.com/blog/atom.xml",
+        "title": "Schneier on Security"
+    },
+    {
+        "url": "http://thearchdruidreport.blogspot.com/feeds/posts/default",
+        "title": "The Archdruid Report"
+    },
+    {
+        "url": "https://blog.jcoglan.com/feed/",
+        "title": "The If Works"
+    },
+    {
+        "url": "http://www.tri4joe.com/feed/",
+        "title": "Tri4Joe"
+    },
+    {
+        "url": "http://moslereconomics.com/feed/",
+        "title": "Mosler Economics"
+    },
+    {
+        "url": "http://webmink.com/feed/",
+        "title": "Wild Webmink"
+    }
+]
