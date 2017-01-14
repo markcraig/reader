@@ -37,6 +37,10 @@ angular
 
                 handleList = function (data) {
                     var feed, j, recent;
+                    if (data.responseData === undefined || data.responseData === null) {
+                        console.log("data.responseData is empty");
+                        return;
+                    }
                     feed = data.responseData.feed;
                     recent = {
                         feedUrl: feed.feedUrl,
